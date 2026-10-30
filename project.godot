@@ -41,5 +41,3 @@ import/blender/enabled=false
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-
-; Foliage palette is set through shared ShaderMaterials, not Shader Globals.
