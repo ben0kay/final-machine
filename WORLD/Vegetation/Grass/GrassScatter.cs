@@ -10,6 +10,13 @@ public partial class GrassScatter : Node3D
     [Export] public NodePath ForestPath { get; set; }
     private readonly Dictionary<Vector2I, List<Vector2>> _trunks = new();
     private const float TrunkCellSize = 4f;
+    private readonly List<Vector2> _growthCenters = new();
+
+    // Ferns build when this one-shot scatter completes, without adding a polling loop.
+    public IReadOnlyList<Vector2> GrowthCenters => _growthCenters;
+    public int PlacedTufts { get; private set; }
+    public bool IsBuilt { get; private set; }
+    public event Action ScatterFinished;
 
     private readonly struct GrassItem
     {
@@ -34,6 +41,9 @@ public partial class GrassScatter : Node3D
         var patchNoise = new FastNoiseLite { Seed = Settings.Seed + 701, Frequency = 0.025f };
         var detailNoise = new FastNoiseLite { Seed = Settings.Seed + 903, Frequency = 0.21f };
         var centers = new Dictionary<Vector2I, List<Vector2>>();
+        _growthCenters.Clear();
+        PlacedTufts = 0;
+        IsBuilt = false;
         CacheTrunks();
         var batches = new Dictionary<Vector2I, List<GrassItem>[]>();
         float spacing = Mathf.Max(1f, Settings.MinimumPatchSpacing);
@@ -114,7 +124,11 @@ public partial class GrassScatter : Node3D
                 added++;
 
                 int variant = (int)random.RandiRange(0, 2);
-                float scale = random.RandfRange(minScale, maxScale);
+                // Unequal short/medium/tall distribution keeps nearby tufts from reading as clones.
+                float heightTier = random.Randf();
+                float scaleT = heightTier < 0.22f ? random.RandfRange(0f, 0.40f) :
+                    heightTier < 0.84f ? random.RandfRange(0.32f, 0.84f) : random.RandfRange(0.78f, 1f);
+                float scale = Mathf.Lerp(minScale, maxScale, scaleT);
                 float width = scale * random.RandfRange(Settings.MinimumWidth, Settings.MaximumWidth);
                 Vector3 normal = surface.Call("surface_normal", gx, gz).AsVector3();
                 Vector3 up = Vector3.Up.Lerp(normal, Settings.NormalAlignment).Normalized();
@@ -132,6 +146,7 @@ public partial class GrassScatter : Node3D
                 variants[variant].Add(new GrassItem(new Transform3D(basis, local), tint));
                 tuftCount++;
             }
+            if (added > 0) _growthCenters.Add(center);
         }
 
         _trunks.Clear();
@@ -153,8 +168,11 @@ public partial class GrassScatter : Node3D
                     AddMeshes(source, Transform3D.Identity, entry.Key, entry.Value[variant], batchSize, lod, material);
             source.Free();
         }
-        GD.Print("GrassScatter: " + centers.Count + " patches, " + tuftCount +
+        PlacedTufts = tuftCount;
+        IsBuilt = true;
+        GD.Print("GrassScatter: " + _growthCenters.Count + " populated patches, " + tuftCount +
             " tufts across " + batches.Count + " cells; no grass process callbacks.");
+        ScatterFinished?.Invoke();
     }
 
     // =========================================================

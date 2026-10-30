@@ -1,10 +1,14 @@
 # FM1 — forest atmosphere and live tuning
 
-`environment.tscn` retains installed Sky3D 2.1, its existing sun/moon and static clock. `daylight.gd` applies initial ambient lighting/SSAO after Sky3D initializes. `EnvironmentController` is the game-owned boundary: TestWorld binds the ready Sky3D instance and player camera once. No addon code, weather or automatic clock progression is added.
+`environment.tscn` retains installed Sky3D 2.1 and its sun/moon, now running a configurable day/night cycle. `daylight.gd` applies initial ambient lighting/SSAO after Sky3D initializes. `EnvironmentController` is the game-owned boundary: TestWorld binds the ready Sky3D instance and player camera once. No addon code or weather simulation is added.
 
 ## Defaults and ownership
 
-Edit `Configuration/EnvironmentMaster.tres` (typed `EnvironmentSettings`) for authored defaults: distance fog enabled, clear 60m, fully obscured 180m, muted grey-blue tint, native atmospheric density 0.008, time 13:30, sunlight 1.2 and shadow range 100m. Runtime settings are a private duplicate. Debug edits never save resources, scenes or terrain. The full distance remains at least one metre beyond clear distance. Atmospheric haze is independently controlled: turning distance fog off leaves the density setting in effect; set density to zero to remove both.
+Edit `Configuration/EnvironmentMaster.tres` (typed `EnvironmentSettings`) for authored defaults: distance fog enabled, clear 60m, fully obscured 180m, muted grey-blue tint, native atmospheric density 0.008, starting time 13:30, **day length 60 real minutes**, sunlight 1.2 and shadow range 100m. Runtime settings are a private duplicate. Debug edits never save resources, scenes or terrain. The full distance remains at least one metre beyond clear distance. Atmospheric haze is independently controlled: turning distance fog off leaves the density setting in effect; set density to zero to remove both.
+
+## Time of day and cycle length
+
+Sky3D's `game_time_enabled` is now on, with `minutes_per_day = 60` (slower than Sky3D's 15-minute default). F1 Time / lighting includes a **Day length (real minutes)** slider from 15–240 minutes in 5-minute steps. Both the cycle length and manual time-of-day slider apply live, without editing the authored master resource. The controller sets the initial clock only once: changing fog, sunlight or day length must not unexpectedly reset an already-running clock. Time changes use an explicit `SetHour` method. No extra per-frame code is added by Final Machine; Sky3D owns its regular clock update.
 
 ## Distance rendering
 

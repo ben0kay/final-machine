@@ -7,7 +7,7 @@ F1 opens/closes the panel; Escape closes it. Opening records capture state, rele
 Scrollable, independently collapsible sections:
 
 - **Environment / fog:** distance fog toggle, clear 5–150m, full 20–600m, atmospheric density 0–0.03, colour picker.
-- **Time / lighting:** Sky3D time 00:00–24:00 (24:00 maps to the last instant before midnight), sunlight energy 0–4, shadow distance 10–300m.
+- **Time / lighting:** Sky3D time 00:00–24:00 (24:00 maps to the last instant before midnight), **day length 15–240 real minutes** (60-minute default), sunlight energy 0–4, shadow distance 10–300m.
 
 Numeric labels update with every slider signal. Crossing distance endpoints adjusts the other endpoint and its displayed slider value. Copy Settings copies a JSON snapshot of every exposed effective runtime value, including RGBA fog colour. No disk writes or editor-default mutations occur. Future controls can reuse the section/slider shell and bind explicit feature owners; no future tabs are built now.
 

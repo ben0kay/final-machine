@@ -4,7 +4,8 @@
 script = ExtResource("1")
 current_time = 13.5
 editor_time_enabled = false
-game_time_enabled = false
+game_time_enabled = true
+minutes_per_day = 60.0
 clouds_enabled = false
 fog_enabled = false
 sun_energy = 1.2

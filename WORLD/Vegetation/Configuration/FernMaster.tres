@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="FernSettings" load_steps=2 format=3]
+[ext_resource type="Script" path="res://WORLD/Vegetation/Ferns/FernSettings.cs" id="1"]
+[resource]
+script = ExtResource("1")
+Seed = 41733
+GrassToFernRatio = 6.0
+FernPatchFraction = 0.62
+AttemptsPerFern = 10
+MaximumFerns = 7500
+ScatterRadius = 4.75
+MinimumSpacing = 1.3
+MinimumWoodland = 0.32
+MinimumSurfaceUp = 0.91
+TrunkClearance = 0.95
+MaximumHeight = 115.0
+MinimumScale = 1.45
+MaximumScale = 2.25
+MinimumWidth = 0.88
+MaximumWidth = 1.18
+TintVariation = 0.04
+DetailedVariantFraction = 0.18
+BatchSize = 32.0
+CullDistance = 46.0
