@@ -26,3 +26,7 @@ The selection swaps **only the Mesh on each already-created MultiMesh**. Trunk c
 PineTree001 source files are named `LOD0/LOD1/LOD2` (near/mid/far) and PineTree002 source files `LOD1/LOD2/LOD3`; the switching code maps both to the same three existing renderer tiers. The shared F1 colour-picker and strength slider also update PineTree001's **foliage** ShaderMaterial now; its bark uses the separate stylized vertex-colour shader. Copy Settings includes `PineTreeModel`. The dropdown and tint are runtime-only; restarting restores PineTree002.
 
 **Pending Godot verification:** Compile, reimport the stylized GLTFs if needed, open F1, switch both ways while standing still, inspect all LOD distances, sunlight/shadows, shared tint, FPS and stable tree collision. Repository source checks do not establish engine acceptance.
+
+## Startup model change
+
+`WORLD/Scenes/test.tscn` now starts with PineTree001. The F1 model comparison dropdown still changes to PineTree002 and back; switching does not change tree placement or reconstruct collision. Only the selected startup model loads initially, with the other family cached on first selection. The runtime dropdown resets to PineTree001 when the test scene restarts. Visual confirmation is pending.

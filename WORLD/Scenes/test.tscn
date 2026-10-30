@@ -24,6 +24,7 @@ script = ExtResource("1")
 script = ExtResource("5")
 Settings = ExtResource("6")
 SurfacePath = NodePath("../Terrain")
+StartingVisualStyle = 1
 [node name="Grass" type="Node3D" parent="."]
 script = ExtResource("10")
 Settings = ExtResource("11")

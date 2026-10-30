@@ -58,3 +58,7 @@ The imported GLTF/BIN pair names now use **LOD0/LOD1/LOD2**, consistent with Ter
 ## F1 live model comparison in the active forest
 
 The main test world's F1 debug overlay now switches the original PineTree002 forest to PineTree001 and back at runtime. This retains all original tree transforms, forest occupancy/trunk collision, visibility tier distances and other foliage. `PineForest` lazily prepares PineTree001's three mesh tiers and binds the existing `PineTree001Bark.tres` and `PineTree001Foliage.tres` materials before swapping them onto the existing GPU MultiMeshes. The shared forest tint controls update PineTree001 foliage too. Its preview scene and Terrain3D Test2 wrapper remain untouched. Switching is for appearance comparisons, not a persistent art selection; Godot lighting, alpha, LOD and FPS review remains pending.
+
+## Main test world startup selection
+
+The active `WORLD/Scenes/test.tscn` now starts with PineTree001 instead of PineTree002. Both still use one tree scatter, existing MultiMesh batches and the same near/mid/far LOD ranges, positions and trunk colliders. PineTree002 is prepared only when selected in F1 for comparison. Source GLTF geometry/materials and the separate Test2 paintable asset are unchanged. In-engine rendering and FPS acceptance remain local checks.

@@ -25,3 +25,7 @@ Default preview values are (0.43, 0.55, 0.37; strength 0.25), declared in `Fores
 ## F1 PineTree001 / PineTree002 comparison
 
 The active test world still builds the original PineTree002 forest by default. The F1 debug overlay now offers a reversible, runtime-only PineTree001 (faceted) / PineTree002 (realistic) selector without a second forest. It swaps the shared Mesh resources on the **existing spatial MultiMeshes** and does not recalculate placement or trunk collisions. Both families use the same 70/280/600m tiers; PineTree001's zero-based LOD0/1/2 correspond to PineTree002's LOD1/2/3. PineTree001 uses its existing bark and foliage shaders and now participates in the existing shared forest-tint controls. No new per-frame work or persistent setting; in-engine results and FPS are pending local comparison. See [debug overlay](../../DEBUG/Overlay/README.md).
+
+## Test world starting tree
+
+`WORLD/Scenes/test.tscn` now sets `Forest.StartingVisualStyle = PineTree001`. The existing tree scatter builds its shared MultiMesh batches with PineTree001's zero-based LOD0/LOD1/LOD2 source meshes on startup. PineTree002 loads only on first F1 comparison selection; both families remain cached once loaded. Tree locations, density, collision, lighting, LOD distances, grass and ferns are unchanged. Local Godot verification is pending.
