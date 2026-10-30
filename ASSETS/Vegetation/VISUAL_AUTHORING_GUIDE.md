@@ -45,6 +45,28 @@ These are the owner's general baseline for future full-sized trees of ALL specie
 
 **Success criterion:** At long distance, the tree should contribute a **thick, green, plausibly coniferous silhouette** to the forest rather than a bare winter trunk; up close it may be obviously crude. Do not quote an FPS improvement or “verified Far Cry-like forest” without actual in-engine measurements.
 
+### Mandatory biological plausibility and mechanical mesh integrity
+
+**Every newly authored or modified natural asset must pass both a biological/structural plausibility check AND a technical mesh/shading check.** Attractive screenshots and low triangle counts are not sufficient. The aim is believable natural shapes, correct orientation and robust Godot lighting. Apply these requirements **to every variant and LOD**, not just the hero model.
+
+**Biological / physical plausibility (visual authoring):**
+
+- Identify the plant/tree family and check representative reference photos or existing approved models before constructing it. Branches should originate from credible attachment points, taper appropriately, and carry foliage in locations consistent with that species; do not add detached or unsupported branches or arbitrary floating foliage layers.
+- Tree roots/trunks should visibly support the crown and meet the ground plausibly. Grass and plants should grow **up from an anchored base**, with plausible blade/leaf orientation, overlap, length and lean; no upside-down cards, floating tufts, impossible perfectly radial roots, or mechanical-looking repetition.
+- For rocks, examine believable mass, fracture continuity, bedding/erosion where relevant, gravity and stable ground contact. Material placement (moss, dirt, wetness, snow) should make environmental sense rather than being applied uniformly.
+- “Anatomically correct” here means **species-recognizable, mechanically plausible construction within the chosen semi-realistic art style**, not expensive biological simulation or a guarantee of exact botanical anatomy. Compare silhouette, scale and form under neutral lighting from several angles.
+
+**Technical mesh / lighting integrity (mandatory before acceptance):**
+
+1. **Check triangle winding and front/back orientation in exported geometry.** Verify glTF index order and geometric face normals; inspect the determinant of any mirrored/negative-scale transform and evaluate normals in a consistent coordinate space. A model with normal vectors of unit length can still be completely **reversed** relative to its triangles.
+2. **Check vertex normals AND tangents.** Confirm intended face direction and consistent smoothing, especially where billboards/cards intersect or geometry is mirrored. Some foliage uses deliberately bent/upward-biased normals for soft lighting; document that art choice and test it rather than blindly flattening, reversing or overwriting normals. Ensure normal-map tangent handedness is valid when tangent-space maps are used.
+3. **Verify front-facing versus back-facing lighting with a directional sun.** In Godot, rotate the sun around a single asset (front/back/left/right, low and high elevation), and compare visible illuminated surfaces with the actual light direction. If the wrong side brightens or one side goes almost black, inspect source geometry, transformed normals, material culling, double-sided shading, normal-map convention and shader front/back handling **before** editing texture brightness.
+4. **Do not fix a reversed mesh using cosmetic hacks.** Turning off culling, adding emission, globally increasing ambient brightness, forcing two-sided illumination or flipping normals again in shaders may hide symptoms but can cause other problems. Correct the root issue where supported by evidence, then retain only intentionally designed two-sided foliage behaviour.
+5. **Recheck in the actual runtime material and Godot importer.** Blender preview, scripted image renders and raw GLTF inspection do not guarantee Godot correctness. Check texture import (including normal-map conventions and mipmaps), alpha-cutout coverage, vertex colours, shadows, wind deformation and light-direction changes **after import**. Include LOD transition and distant lighting tests.
+6. **Record the outcome, not just a generic “looks good.”** The asset README/handoff must say which A/B/C variants and LODs were examined, whether winding and transformed-normal alignment were checked, whether in-engine front/back sun tests passed, and what was not verifiable locally. Do not claim “mechanically correct” or “Godot-validated” without those checks.
+
+**Historical failure to avoid:** ForestGrass001 looked directionally overbright/dark because exported vertex normals disagreed with geometric triangle direction. This is a *geometry/export validation* failure to prevent at source, not a cue to darken albedo or add more backlighting. See the detailed case history immediately below.
+
 ### Texture, normals and lighting failures that must not recur
 
 1. **A darker albedo is not a lighting fix.** Grass appeared pale toward the sun and almost black from the other side. First inspect source normals, triangle winding, two-sided shading, vertex colour multiplication, light/shadow settings and fog. Distinguish measured file problems from possible rendering causes; screenshots alone do not prove the cause.
@@ -284,7 +306,10 @@ Before calling a new asset “game-ready”, include evidence for the following:
 - [ ] Front, side, 3/4, rear and top views show an appealing, non-repetitive silhouette.
 - [ ] Ground-contact base looks natural; no star spikes, flat skirts, clipping gaps or unintended floating geometry.
 - [ ] Trunk/branch/rock UVs have sensible scale; materials do not stretch noticeably at joints, roots or cliffs.
+- [ ] Species/shape anatomy and physical construction are plausible: attached/tapered branches, grounded roots/stems, credible leaf/blade direction, stable rock forms and natural contact with terrain.
+- [ ] **For every variant and LOD**, exported face winding, transformed geometric normals, vertex normals and applicable tangent handedness were inspected, including mirrored transforms.
 - [ ] Every variant/LOD has valid normals consistent with exported winding and intentional smoothing; Godot front/back lighting checked without duplicate normal flips.
+- [ ] **Godot directional-light test** confirms correct front/back/side illumination under rotating sun and low/high elevation; material culling, two-sided response and shadows are intentional rather than masking a reversed mesh.
 - [ ] Actual texture import mipmaps, alpha edges, source-color/data channels and multiplied vertex/material tints checked; no emission masking a lighting defect.
 - [ ] Textures are reused between variants and LODs where practical; external paths resolve.
 - [ ] Real triangle counts recorded **per LOD**, alongside dimensions, material/surface count and texture dimensions. Repeated full-sized trees of every species meet LOD1 4k–6k / LOD2 1k–1.5k unless the owner explicitly chose an exception; rocks and smaller plants scale down, and grass remains very low-poly.
