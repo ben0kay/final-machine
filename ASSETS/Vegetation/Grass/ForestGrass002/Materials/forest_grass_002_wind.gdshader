@@ -2,8 +2,10 @@
 // Static foliage mesh authored in the GLTF; the runtime scatters entire tufts, not individual cards.
 shader_type spatial;
 render_mode cull_disabled, alpha_to_coverage;
-global uniform vec4 forest_tint;
-global uniform float forest_tint_strength;
+// Material-local uniforms avoid a project-global compile-time dependency.
+// The F1 debug control updates the shared materials together, only on changes.
+uniform vec4 forest_tint : source_color = vec4(0.43, 0.55, 0.37, 1.0);
+uniform float forest_tint_strength : hint_range(0.0, 1.0) = 0.25;
 uniform sampler2D grass_atlas : source_color, filter_linear_mipmap_anisotropic, repeat_disable;
 uniform float alpha_cutoff : hint_range(0.1, 0.8) = 0.40;
 uniform vec3 foliage_tint : source_color = vec3(1.0);

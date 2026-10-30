@@ -3,8 +3,10 @@ shader_type spatial;
 render_mode cull_disabled;
 
 // Shared, project-wide palette; the local grass material still controls its own tint.
-global uniform vec4 forest_tint;
-global uniform float forest_tint_strength;
+// Material-local uniforms avoid a project-global compile-time dependency.
+// The F1 debug control updates the shared materials together, only on changes.
+uniform vec4 forest_tint : source_color = vec4(0.43, 0.55, 0.37, 1.0);
+uniform float forest_tint_strength : hint_range(0.0, 1.0) = 0.25;
 uniform sampler2D grass_atlas : source_color, filter_linear_mipmap_anisotropic;
 // Kept for compatibility with existing ForestGrass001 material parameter sets.
 uniform float alpha_cutoff : hint_range(0.05,0.95) = 0.39;

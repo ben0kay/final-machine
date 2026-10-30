@@ -42,14 +42,4 @@ import/blender/enabled=false
 
 rendering_device/driver.windows="d3d12"
 
-[shader_globals]
-
-forest_tint={
-"type": "color",
-"value": Color(0.43, 0.55, 0.37, 1)
-}
-
-forest_tint_strength={
-"type": "float",
-"value": 0.25
-}
+; Foliage palette is set through shared ShaderMaterials, not Shader Globals.

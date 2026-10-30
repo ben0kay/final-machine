@@ -9,14 +9,15 @@ public partial class EnvironmentDebugOverlay : Control
     private PanelContainer _panel;
     private bool _restoreCapture;
     private HSlider _clear, _full;
-    private static readonly Color DefaultForestTint = new Color(0.43f, 0.55f, 0.37f, 1f);
-    private Color _forestTint = DefaultForestTint;
-    private float _forestTintStrength = 0.25f;
+    private Color _forestTint = ForestFoliagePalette.DefaultTint;
+    private float _forestTintStrength = ForestFoliagePalette.DefaultStrength;
     // =========================================================
     // The FPS label remains a separate HUD sibling, visible with this panel closed.
     public void Initialize(EnvironmentController environment, PlayerController player)
     {
         _environment = environment; _player = player;
+        // Update the four shared resources once on startup (also sets the preview defaults).
+        ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
         MouseFilter = MouseFilterEnum.Ignore;
         _panel = new PanelContainer { Position = new Vector2(16, 80), Size = new Vector2(410, 510), Visible = false };
         AddChild(_panel);
@@ -58,20 +59,20 @@ public partial class EnvironmentDebugOverlay : Control
         forestColor.ColorChanged += value =>
         {
             _forestTint = value;
-            RenderingServer.GlobalShaderParameterSet("forest_tint", value);
+            ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
         };
         foliage.AddChild(forestColor);
         var forestStrength = AddSlider(foliage, "Global tint strength (0 = original)", 0, 1, 0.05,
             _forestTintStrength, value =>
             {
                 _forestTintStrength = value;
-                RenderingServer.GlobalShaderParameterSet("forest_tint_strength", value);
+                ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
             }, "0.00");
         var originalColours = new Button { Text = "Compare original foliage colours" };
         originalColours.Pressed += () => {
             forestStrength.Value = 0;
             _forestTintStrength = 0f;
-            RenderingServer.GlobalShaderParameterSet("forest_tint_strength", 0f);
+            ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
         };
         foliage.AddChild(originalColours);
         var copy = new Button { Text = "Copy Settings" };

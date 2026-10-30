@@ -59,6 +59,17 @@
 - **Fix / prevention:** Set ACTIVE=false; use a valid-region conditional around map sampling instead of processor returns. Avoid invalid array layers and nonfinite positions.
 - **Verification:** Initial startup reported this exact parser error; corrected shader parsing and the focused scene check passed. Actual GPU rendering/performance remain local checks.
 
+### VEG-004 — Required shader global is not registered when foliage shaders compile
+
+**Area:** Vegetation / shader configuration / runtime colour controls  
+**Affected:** PineNeedles.gdshader, both active forest grass shaders, project.godot  
+**Status:** Godot error reported by owner; correction source-inspected, Godot retest pending
+
+- **Symptom:** Godot reports `Global uniform "forest_tint" does not exist` and fails to compile the pine needle shader; both grass shaders share the same dependency.
+- **Confirmed finding:** The shaders require `global uniform` declarations; the running Godot instance did not have the necessary named global registered at shader compilation. The repository had a `[shader_globals]` entry, but **why the running editor did not recognize it is not established** (for example, editor state after an external Git pull needs checking).
+- **Fix / prevention:** Prefer ordinary ShaderMaterial uniforms when a finite set of shared foliage materials needs one UI palette. `ForestFoliagePalette.cs` now updates two pine needle and two forest grass material resources when F1 changes. Removes the project-global compile-time dependency and doesn't touch GLTF geometry, LOD, wind or per-instance batch processing.
+- **Verification:** Reviewed all three shader declarations, four material paths and the single event-driven UI helper. Pull, reopen the Godot project, check for shader compilation errors and confirm F1 changes both pine needles and grass while bark stays unchanged. Runtime result remains owner-pending.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title
