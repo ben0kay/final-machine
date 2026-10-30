@@ -22,3 +22,7 @@ The existing environment has an event-driven EnvironmentController child, with a
 ## Forest-floor vegetation tuning
 
 The test scene also owns `Grass` and `Ferns` nodes. Grass builds after the pines and signals the ferns to populate a subset of actual grass patches. The default target is 6:1 grass:fern by instance count (not measured coverage area). Tune `WORLD/Vegetation/Configuration/GrassMaster.tres` and `FernMaster.tres` independently. Godot compilation, shader rendering and FPS acceptance are still pending for this change.
+
+## Test-world structure preview
+
+The scene includes one reusable `SmallBuilding.tscn` instance at approximate X=7, Z=4 (ahead/right of the player spawn), with its open +Z doorway facing the player. The hierarchy is `WorldActorsRoot/PersistentPropsRoot/Structures/SmallBuilding`; the existing player and other scene roots are left untouched. Once the original terrain collision spawn ray succeeds, `TestWorld.cs` makes one saved-Terrain3D `surface_height` query at the building centre and aligns the building floor to that elevation, with no additional per-frame work. This is a one-point level placement only, not terrain flattening; foundation edges on edited uneven terrain may need manual adjustment. See `../Structures/SmallBuilding/README.md` for the asset and its optional standalone preview scene.

@@ -35,6 +35,7 @@ public partial class TestWorld : Node3D
         var hit = GetWorld3D().DirectSpaceState.IntersectRay(query);
         if (hit.Count > 0)
         {
+            AlignPreviewBuildingToTerrain();
             _player.GlobalPosition = hit["position"].AsVector3() + Vector3.Up * 0.15f;
             _player.SetPhysicsProcess(true);
             SetPhysicsProcess(false);
@@ -45,5 +46,21 @@ public partial class TestWorld : Node3D
             _fps.Text = "Terrain collision unavailable";
             SetPhysicsProcess(false);
         }
+    }
+
+    // =========================================================
+    // Keep the preview structure's finished floor level with the saved Terrain3D surface.
+    // Reuse the existing one-shot spawn readiness check; do not add an update loop.
+    private void AlignPreviewBuildingToTerrain()
+    {
+        var building = GetNode<Node3D>("WorldActorsRoot/PersistentPropsRoot/Structures/SmallBuilding");
+        var location = building.GlobalPosition;
+        float groundY = GetNode("Terrain").Call("surface_height", location.X, location.Z).AsSingle();
+        if (!float.IsFinite(groundY))
+        {
+            GD.PushWarning("SmallBuilding: terrain height unavailable; preview placement kept at its authored Y.");
+            return;
+        }
+        building.GlobalPosition = new Vector3(location.X, groundY, location.Z);
     }
 }
