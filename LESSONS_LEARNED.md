@@ -70,6 +70,17 @@
 - **Fix / prevention:** Prefer ordinary ShaderMaterial uniforms when a finite set of shared foliage materials needs one UI palette. `ForestFoliagePalette.cs` now updates two pine needle and two forest grass material resources when F1 changes. Removes the project-global compile-time dependency and doesn't touch GLTF geometry, LOD, wind or per-instance batch processing.
 - **Verification:** Reviewed all three shader declarations, four material paths and the single event-driven UI helper. Pull, reopen the Godot project, check for shader compilation errors and confirm F1 changes both pine needles and grass while bark stays unchanged. Runtime result remains owner-pending.
 
+### SCENE-001 — Playable editor test scene must initialize its environment independently
+
+**Area:** Terrain3D authoring sandbox / Sky3D
+**Affected:** `WORLD/Scenes/test2.tscn`
+**Status:** User-confirmed error; source fix restored after a force-push, runtime retest pending
+
+- **Symptom:** F6 play of Test 2 produced a Sky3D error at `Sky3D.gd:545`: setting `sky.environment` on nil.
+- **Cause / uncertainty:** The test scene reused the main game's Sky3D environment without its usual initialization owner; the addon setter assumes `sky` exists. Exact initialization ordering was not independently reproduced.
+- **Fix / prevention:** Keep Test 2 independent of the runtime Sky3D setup. Use a plain `WorldEnvironment` with a static sky and sun, plus a one-shot player grounding script. Preserve manually authored Terrain3D editor materials and region data during repair.
+- **Verification:** Source inspection only. After pulling, open Test 2, press F6 and confirm normal preview, no Sky3D nil error, and unaffected Test 1.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title
