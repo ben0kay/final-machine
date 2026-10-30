@@ -6,9 +6,10 @@
 
 1. **Read `CodePreferences.md` in full.** Its code style, `#region` conventions, world-root structure, performance rules, task scope, Git workflow and **minimal/proportional validation preference** all remain authoritative. Do not abbreviate, silently reinterpret or replace them.
 2. **Read the root `README.md`** to understand the current game direction, technical foundation and implemented-vs-planned state.
-3. **Read the owning feature's documentation before modifying it** (for example `WORLD/Terrain/README.md`, `WORLD/Environment/README.md`, `WORLD/Vegetation/README.md`, `PLAYER/README.md`, or `DEBUG/Overlay/README.md`), plus any relevant asset README and authoring guide. Inspect the actual scene/scripts/resources too; documentation can be outdated.
-4. **For any tree, grass, plant, rock or other natural asset creation/modification, first read `ASSETS/Vegetation/VISUAL_AUTHORING_GUIDE.md`.** Apply its geometry, triangle/LOD, material, winding/normals/lighting, botanical plausibility, export and acceptance checks. Read the specific asset's README as well.
-5. Use `terra-machine` and `war-machine` **only as references** when useful or requested. This repository is **Terrain3D-first**; don't port Voxel Tools code or inherit another repository's branch policy.
+3. **Read the root `LESSONS_LEARNED.md`** and check for relevant past failures and prevention rules before planning or editing. This is the single central lessons file for now.
+4. **Read the owning feature's documentation before modifying it** (for example `WORLD/Terrain/README.md`, `WORLD/Environment/README.md`, `WORLD/Vegetation/README.md`, `PLAYER/README.md`, or `DEBUG/Overlay/README.md`), plus any relevant asset README and authoring guide. Inspect the actual scene/scripts/resources too; documentation can be outdated.
+5. **For any tree, grass, plant, rock or other natural asset creation/modification, first read `ASSETS/Vegetation/VISUAL_AUTHORING_GUIDE.md`.** Apply its geometry, triangle/LOD, material, winding/normals/lighting, botanical plausibility, export and acceptance checks. Read the specific asset's README as well.
+6. Use `terra-machine` and `war-machine` **only as references** when useful or requested. This repository is **Terrain3D-first**; don't port Voxel Tools code or inherit another repository's branch policy.
 
 ## While implementing
 
@@ -20,7 +21,8 @@
 
 - **Save Codex time:** do brief, focused source checks and a basic build/essential check when practical. **Do not spend ages on repeated builds, extensive test suites, automated visual validation or performance profiling unless explicitly asked.** The owner performs most in-Godot visual and FPS acceptance testing. State clearly what was checked and what remains unverified.
 - Follow `CodePreferences.md` for Git authorization and branch rules. Prefer **one logical commit per authorized job**, and push when authorized; do not make extra unrelated commits.
-- Update the owning README/authoring guide **when the task introduces a lasting design rule or resolves a significant recurring mistake**. Record the symptom, verified root cause, prevention rule, and short verification step; separate confirmed results from assumptions. Do not turn an unverified guess into a permanent requirement.
+- **Maintain the root `LESSONS_LEARNED.md` as part of normal work:** when a significant technical mistake is fixed, or a reusable failure-prevention lesson is confirmed, add or update one concise entry in the same authorized task. Record the symptom, confirmed cause (or explicitly mark it unverified), fix, prevention rule, and simple verification step. Do **not** log trivial typos, routine visual tuning, speculative diagnoses or duplicate entries. Keep this one central file; do not create per-folder lessons files unless the owner asks.
+- Update the owning README/authoring guide only when that feature's lasting design rules or usage instructions actually change; link to the central lesson rather than duplicating a lengthy incident report. Do not turn an unverified guess into a permanent requirement.
 - In your handoff, briefly report changes, commit SHA if applicable, checks performed, and the specific visual/runtime checks left to the owner.
 
 **Principle:** Read the lessons first, make focused changes, check just enough, and preserve what already works.
