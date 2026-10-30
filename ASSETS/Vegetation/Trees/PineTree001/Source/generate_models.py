@@ -125,7 +125,7 @@ def build(lod):
     return bark,leaves
 
 def export(lod,bark,leaves):
-    base=f'pine_tree_001_a_LOD{lod}';path=ROOT/'Models'/f'{base}.gltf'; binary=bytearray();accessors=[];views=[]
+    base=f'pine_tree_001_a_LOD{lod-1}';path=ROOT/'Models'/f'{base}.gltf'; binary=bytearray();accessors=[];views=[]
     # Create glTF data as two disjoint material surfaces so foliage can be shader-overridden without affecting bark.
     def store(arr,componentType,name):
         nonlocal binary

@@ -49,3 +49,7 @@ Then use this `ShaderMaterial` on **surface 1** of the imported PineTree001 mode
 ## Test 2 Terrain3D instancer
 
 `WORLD/Scenes/Test2/PineTree001_Terrain3D.tscn` is a **separate paintable three-LOD wrapper** for the editor; `WORLD/Scenes/Test2/TerrainAssets_Test2.tres` registers it only in Test 2. The wrapper uses the existing authored GLTFs (no re-export), with Terrain3D distance ranges 70/280/600m and shadows disabled at the farthest LOD. See `WORLD/Scenes/README.md` for painting instructions and important limitations: the imported vertex-colour materials are used initially, not the preview-only custom shader/tint or custom trunk collision proxies. Do not alter the active forest until the owner accepts the Test 2 appearance.
+
+## Source filenames — Terrain3D zero-based convention
+
+The imported GLTF/BIN pair names now use **LOD0/LOD1/LOD2**, consistent with Terrain3D's indexes: **LOD0 = near 5,234 triangles**, **LOD1 = mid 1,354**, **LOD2 = far 146**. This is a filename/node/mesh-label and buffer-URI migration only; all binary geometry bytes are unchanged. `Source/generate_models.py` now emits the same names on regeneration. The comparison preview still displays human-friendly LOD1/LOD2/LOD3 labels while mapping them to source LOD0/LOD1/LOD2. No tree placement, thresholds or active forest is changed.

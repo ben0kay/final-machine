@@ -55,7 +55,7 @@ Open **`WORLD/Scenes/test2.tscn` in the Godot 3D editor** to sculpt or paint; **
 
 ## Test 2 — paintable PineTree001 (three authored LODs)
 
-The **Meshes** tab in Terrain3D's asset dock now includes **PineTree001 • Stylized (3 LODs)** as asset ID 1, Test 2 only. Select `Terrain`, switch to Terrain3D's **Instancer** brush and select that asset, then paint in the editor viewport. The wrapper `Test2/PineTree001_Terrain3D.tscn` groups the existing three GLTF scenes without touching their geometry or materials. Its imported mesh instances are discovered by Terrain3D's built-in LOD scan (near/mid/far order). Source-file naming is LOD1/LOD2/LOD3, while Terrain3D's asset indexing is LOD0/LOD1/LOD2.
+The **Meshes** tab in Terrain3D's asset dock now includes **PineTree001 • Stylized (3 LODs)** as asset ID 1, Test 2 only. Select `Terrain`, switch to Terrain3D's **Instancer** brush and select that asset, then paint in the editor viewport. The wrapper `Test2/PineTree001_Terrain3D.tscn` groups the existing three GLTF scenes without touching their geometry or materials. Its imported mesh instances are discovered by Terrain3D's built-in LOD scan (near/mid/far order). Source GLTF/BIN filenames and Terrain3D indexes now both use **LOD0/LOD1/LOD2** (near/mid/far).
 
 Configured distance limits: near **0–70m** (5,234 triangles), mid **70–280m** (1,354 triangles), far **280–600m** (146 triangles), and cull beyond. Terrain3D handles spatial MultiMesh placement; **no per-tree scripts** are introduced. Set `last_shadow_lod=1` to stop shadows at the farthest LOD. This asset is **not** registered in the main test world's `TerrainAssets.tres` and does not alter its existing `PineForest.cs` scatter.
 

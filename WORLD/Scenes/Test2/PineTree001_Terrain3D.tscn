@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3]
 
-[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD1.gltf" id="1"]
-[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD2.gltf" id="2"]
-[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD3.gltf" id="3"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD0.gltf" id="1"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD1.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD2.gltf" id="3"]
 
 [node name="PineTree001_Terrain3D" type="Node3D"]
 

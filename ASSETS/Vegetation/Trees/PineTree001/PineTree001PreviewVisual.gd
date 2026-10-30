@@ -11,7 +11,7 @@ func _ready() -> void:
 # =========================================================
 func _load_visual() -> void:
     if get_child_count() > 0: return
-    var base_path := "res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD%d.gltf" % lod
+    var base_path := "res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD%d.gltf" % (lod - 1)
     var model := load(base_path) as PackedScene
     if model == null:
         push_error("PineTree001: Missing source model: " + base_path)
