@@ -26,15 +26,43 @@ This file adapts the user's established coding preferences from Terra Machine/Wa
 - Prefer simple implementations with clearly owned responsibilities and replaceable art/graphics. Do not overengineer for imaginary future features.
 - Keep gameplay/domain logic separate from addon/native integrations and from imported visual assets.
 
-### Godot scene tree organization (mandatory preference)
+### Godot world root hierarchy and scene tree organization (mandatory preference)
 
-- Keep **root scene trees clean and easy to navigate**. A main world scene should show only major responsibilities at its top level (for example `Terrain`, `Environment`, `Vegetation`, `Entities`, `Structures`, `Player`, `Debug`), not dozens or hundreds of individual objects.
-- Group related nodes under clearly named **plain organizational `Node`/`Node3D` parents** or reusable subscenes. For example, put forest instances and their helpers under `Vegetation/Forest` instead of scattering trees across the world root.
-- Prefer **instanced reusable scenes** for self-contained systems (player, terrain, environment, forest manager, buildings). Keep the owning system's internal nodes inside that scene rather than exposing its internals at the world root.
-- Use descriptive, consistent names and sensible hierarchy depth: avoid both a flat cluttered root **and** unnecessary nesting/wrapper nodes. Do not add managers or processing scripts to organizational nodes that only need to group children.
-- **Never make thousands of individual tree/grass/prop scene nodes merely for editor organization.** Prefer appropriate MultiMesh/native Terrain3D instancing or streamed batches, grouped under a small number of meaningful scene owners.
-- When adding a feature, place it under the correct existing root group; create a new top-level category only if it represents a genuinely separate responsibility. Preserve stable scene paths/signals and update references when a hierarchy must change.
-- Keep the Godot scene tree intuitive enough that the owner can quickly expand a top-level group, find a system, and toggle visibility/debug it without hunting through unrelated nodes.
+**Follow the actual world-root container architecture in [War Machine's `WORLD/World.tscn`](https://github.com/ben0kay/war-machine/blob/implement-td0-td1/WORLD/World.tscn) as a reference.** This is about cleanly separated **runtime ownership and spawn/stream/persistence roots**, not merely nice-looking folder names or an arbitrary collection of scene nodes. Inspect the referenced scene before inventing a new hierarchy.
+
+War Machine's demonstrated pattern:
+
+```text
+World
+├── TerrainRoot
+│   └── Terrain3D
+├── WorldActorsRoot
+│   ├── PersistentEntitiesRoot
+│   │   ├── Player
+│   │   ├── Zombies
+│   │   ├── Wildlife
+│   │   └── RobotPatrol
+│   └── PersistentPropsRoot
+│       ├── Structures
+│       └── Objects
+│           └── Cars
+├── Camera
+├── GameplayHUD
+├── DebugUIRoot
+└── SystemsRoot
+    ├── Audio
+    ├── VegetationRoot
+    └── EnvironmentRoot
+```
+
+- In **Final Machine**, aim for equivalent meaningful parent roots such as `TerrainRoot`, `WorldActorsRoot` (`PersistentEntitiesRoot` and `PersistentPropsRoot` beneath it), `SystemsRoot` (`VegetationRoot`, `EnvironmentRoot`, `Audio` where relevant), and `DebugUIRoot` when those systems actually exist. Adapt intelligently to the new project; **do not create unused placeholder groups or blindly port War Machine's features**.
+- **Spawn runtime entities under their intended roots**: players, animals, zombies and other actors under an entities root; spawned structures, vehicles and physical props under appropriate prop/structure roots. Do not add spawned gameplay objects as miscellaneous direct children of `World`.
+- Keep **terrain, gameplay actors, persistent props, and shared systems in separate ownership trees** so saving, unloading/streaming, visibility/debug tools and future management can target an entire category without costly global searches.
+- Each meaningful subsystem should use a reusable **instanced scene** when appropriate, with its own private internals beneath the corresponding root. Grouping `Node`/`Node3D` parents are fine; they **must not have processing scripts merely to be containers**.
+- Use consistent, readable root names and avoid both flat world-root clutter and needless deep nesting. Stable node paths should be deliberate; update exported references and paths if a hierarchy changes.
+- **Vegetation is not thousands of individual nodes under a root.** Put native Terrain3D instancing, MultiMesh batches or a responsible forest/foliage owner under a small number of meaningful containers.
+- When starting the simple test world, create **only the root groups needed now**, while allowing the intended `WorldActorsRoot` / `PersistentEntitiesRoot` ownership pattern for the player. Add prop, wildlife, zombie and other roots when those features are actually implemented.
+- Before making a new world scene, examine the War Machine reference root structure and use it as the conceptual baseline. Final Machine's terrain foundation remains **Terrain3D**, and its actual scene layout may differ where technically necessary.
 
 ### Reference repository conventions
 
