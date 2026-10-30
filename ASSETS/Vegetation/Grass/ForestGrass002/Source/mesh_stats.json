@@ -1,0 +1,56 @@
+{
+  "forest_grass_002_a_LOD1": {
+    "triangles": 20,
+    "cards": 5,
+    "vertices": 30,
+    "height": 0.541,
+    "x_extent": 0.745,
+    "z_extent": 0.738,
+    "min_normal_alignment": 0.996
+  },
+  "forest_grass_002_a_LOD2": {
+    "triangles": 6,
+    "cards": 3,
+    "vertices": 12,
+    "height": 0.541,
+    "x_extent": 0.745,
+    "z_extent": 0.657,
+    "min_normal_alignment": 1.0
+  },
+  "forest_grass_002_b_LOD1": {
+    "triangles": 20,
+    "cards": 5,
+    "vertices": 30,
+    "height": 0.657,
+    "x_extent": 0.835,
+    "z_extent": 0.877,
+    "min_normal_alignment": 0.999
+  },
+  "forest_grass_002_b_LOD2": {
+    "triangles": 6,
+    "cards": 3,
+    "vertices": 12,
+    "height": 0.657,
+    "x_extent": 0.767,
+    "z_extent": 0.877,
+    "min_normal_alignment": 1.0
+  },
+  "forest_grass_002_c_LOD1": {
+    "triangles": 24,
+    "cards": 6,
+    "vertices": 36,
+    "height": 0.702,
+    "x_extent": 0.667,
+    "z_extent": 0.98,
+    "min_normal_alignment": 1.0
+  },
+  "forest_grass_002_c_LOD2": {
+    "triangles": 6,
+    "cards": 3,
+    "vertices": 12,
+    "height": 0.67,
+    "x_extent": 0.448,
+    "z_extent": 0.661,
+    "min_normal_alignment": 1.0
+  }
+}

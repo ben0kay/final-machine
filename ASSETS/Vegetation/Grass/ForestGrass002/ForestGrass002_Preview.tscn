@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_a_LOD1.gltf" id="1"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_b_LOD1.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_c_LOD1.gltf" id="3"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_a_LOD2.gltf" id="4"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_b_LOD2.gltf" id="5"]
+[ext_resource type="PackedScene" path="res://ASSETS/Vegetation/Grass/ForestGrass002/Models/forest_grass_002_c_LOD2.gltf" id="6"]
+[sub_resource type="PlaneMesh" id="floor"]
+size = Vector2(9, 7)
+[sub_resource type="StandardMaterial3D" id="floor_mat"]
+albedo_color = Color(0.29, 0.26, 0.19, 1)
+roughness = 1.0
+[sub_resource type="Environment" id="env"]
+background_mode = 1
+background_color = Color(0.58, 0.63, 0.66, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.78, 0.82, 0.74, 1)
+ambient_light_energy = 0.55
+[sub_resource type="LabelSettings" id="label"]
+font_size = 23
+font_color = Color(1, 1, 1, 1)
+outline_size = 4
+outline_color = Color(0.07, 0.09, 0.06, 1)
+[node name="ForestGrass002_Preview" type="Node3D"]
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("floor")
+surface_material_override/0 = SubResource("floor_mat")
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.85, -0.5, 0.1)
+light_energy = 1.1
+shadow_enabled = false
+[node name="Camera3D" type="Camera3D" parent="."]
+position = Vector3(0, 2.0, 5.5)
+rotation = Vector3(-0.23, 0, 0)
+current = true
+fov = 52.0
+[node name="LOD1_A" parent="." instance=ExtResource("1")]
+position = Vector3(-2.1, 0, 0.85)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LOD1_B" parent="." instance=ExtResource("2")]
+position = Vector3(0, 0, 0.85)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LOD1_C" parent="." instance=ExtResource("3")]
+position = Vector3(2.1, 0, 0.85)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LOD2_A" parent="." instance=ExtResource("4")]
+position = Vector3(-2.1, 0, -1.4)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LOD2_B" parent="." instance=ExtResource("5")]
+position = Vector3(0, 0, -1.4)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LOD2_C" parent="." instance=ExtResource("6")]
+position = Vector3(2.1, 0, -1.4)
+scale = Vector3(1.6, 1.6, 1.6)
+[node name="LabelA" type="Label3D" parent="."]
+position = Vector3(-2.1, 1.27, 0.85)
+text = "A — SPREADING"
+font_size = 24
+pixel_size = 0.005
+billboard = 1
+[node name="LabelB" type="Label3D" parent="."]
+position = Vector3(0, 1.27, 0.85)
+text = "B — BALANCED"
+font_size = 24
+pixel_size = 0.005
+billboard = 1
+[node name="LabelC" type="Label3D" parent="."]
+position = Vector3(2.1, 1.27, 0.85)
+text = "C — TALLER"
+font_size = 24
+pixel_size = 0.005
+billboard = 1
+[node name="LabelNear" type="Label3D" parent="."]
+position = Vector3(-3.25, 0.1, 1.5)
+text = "LOD1"
+font_size = 26
+pixel_size = 0.005
+billboard = 1
+[node name="LabelFar" type="Label3D" parent="."]
+position = Vector3(-3.25, 0.1, -1.0)
+text = "LOD2"
+font_size = 26
+pixel_size = 0.005
+billboard = 1
