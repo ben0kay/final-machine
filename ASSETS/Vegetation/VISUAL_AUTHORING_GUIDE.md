@@ -1,4 +1,6 @@
-# Terra Machine — Vegetation & Natural Asset Visual Authoring Guide
+# Final Machine — Vegetation & Natural Asset Visual Authoring Guide
+
+Final Machine FM0 uses this copied art guide as a visual baseline. Historical Terra Machine runtime paths below are reference history, not installed helpers. The current Final Machine three-LOD integration is documented in `WORLD/Vegetation/README.md`; PineTree002 source models and the original prefab are preserved.
 
 > **Status:** Owner-directed authoring instructions, updated 2026-10-30. Applies to future AI-assisted and human-authored natural 3D assets.  
 > **Purpose:** Preserve the grounded, detailed-but-efficient look established while iterating the mature oak, northern conifer, and mossy cover boulder.  

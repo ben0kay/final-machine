@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="Script" path="res://WORLD/Terrain/Integration/Terrain3D/surface.gd" id="1"]
+[ext_resource type="Terrain3DAssets" path="res://WORLD/Terrain/Configuration/TerrainAssets.tres" id="2"]
+[sub_resource type="Terrain3DMaterial" id="Material"]
+[node name="Terrain" type="Terrain3D"]
+script = ExtResource("1")
+region_size = 256
+data_directory = "res://WORLD/Terrain/Landscape/Regions"
+assets = ExtResource("2")
+material = SubResource("Material")
+collision_mode = 3

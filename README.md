@@ -3,7 +3,7 @@
 > **Working title:** Final Machine  
 > **Direction:** Hardcore first-person wilderness survival simulator; **Sons of the Forest-style immersion and believable landscape are the immediate priorities**.  
 > **Terrain foundation:** **Terrain3D**, a finite, seed-generated and selectively authored heightmap world. **Do not introduce Voxel Tools** unless the owner explicitly revisits that decision.  
-> **Status:** New Godot project / design and technical foundation. Aspirations below are **not implemented features** or blanket authorization to build them.
+> **Status:** FM0 playable landscape implementation — awaiting local visual acceptance. Aspirations below are **not implemented features** or blanket authorization to build them.
 
 ## Read first — project identity
 
@@ -36,7 +36,7 @@ Terra Machine explored smooth Voxel Tools terrain because unrestricted ground ex
 
 ### Technical direction
 
-Use Godot 4 .NET/C# with the project renderer/physics settings validated on the owner's machine. The repository currently starts as a minimal Godot project. **Terrain3D has not yet been installed or configured in this repo** as of this document's creation; inspect the actual addon and version before coding. Treat upstream APIs as version-specific; do not invent methods.
+Use Godot 4 .NET/C# with the project renderer/physics settings validated on the owner's machine. The repository currently starts as a minimal Godot project. **Terrain3D 1.0.2 is installed and configured for FM0**; inspect its version before future API changes. Treat upstream APIs as version-specific; do not invent methods.
 
 Proposed modules **only when the associated feature is authorized**:
 
@@ -89,7 +89,7 @@ These are **design targets only**, not active tasks:
 
 | Phase | Goal | State |
 | --- | --- | --- |
-| **FM0** | Verify project/.NET, install and validate Terrain3D version; minimal scene, ground, player and collision | Planned |
+| **FM0** | Native 1024m landscape, textured ground, first-person player, three-LOD pine forest, static daylight and FPS | Implemented / local visual acceptance pending |
 | **FM1** | Beautiful forest/landscape visual benchmark, native terrain materials, foliage, atmosphere and FPS profiling | Planned |
 | **FM2** | Finite seeded geography with authored-point-of-interest pipeline; evaluate terrain regions and scale | Planned |
 | **FM3** | First quiet survival loop: forest walk, building shelter, sound perception, one wildlife/enemy prototype | Deferred |
@@ -107,3 +107,8 @@ Read [CodePreferences.md](CodePreferences.md) before changes. Favor C#, modular 
 - [war-machine](https://github.com/ben0kay/war-machine): broader C# modular patterns, object/structure authoring, physics, AI and detailed design notes. Do not assume its older branch, gameplay or code is active here.
 
 **North star:** *A world worth moving through carefully: believable forests, real consequences, and the tension of finding shelter before nightfall.*
+
+## FM0 — landscape & forest test
+Run `WORLD/Scenes/test.tscn` with Godot 4.6+ **.NET** and .NET 8. Main scene is configured. See [scene validation/controls](WORLD/Scenes/README.md), [player](PLAYER/README.md), [terrain authoring and saved edits](WORLD/Terrain/README.md), [forest/LOD ownership](WORLD/Vegetation/README.md), and [static environment](WORLD/Environment/README.md).
+
+Committed terrain is native editable data, never regenerated on launch. Initial clearing looks north toward pine woodland, the broad mountain approach and escarpment. Controls: arrows / mouse / Shift sprint / RMB jump / Escape cursor / click recapture. No survival systems, grass meshes, buildings, wildlife or threats are included.

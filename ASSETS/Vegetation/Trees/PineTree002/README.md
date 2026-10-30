@@ -23,3 +23,6 @@ Godot/.NET are unavailable here. Pull, let Godot reimport, restart test.tscn, th
 ## Three-stage authored LOD — integrated 2026-10-30
 
 `PineTree002.tscn` now includes the supplied `Models/pine_tree_002_a_LOD3.gltf`, configured through the optional third slot in `AuthoredTreeLod`. Native ranges: **LOD1 0–70 m**, **LOD2 70–280 m**, **LOD3 280–600 m**, then cull. LOD3 is 120 triangles and casts no shadows. The prior 280 m final-cull description above is historical; no geometry, materials, collision, rotation, tree size, placement counts, forest settings or source files changed. F1 provides a second split slider and Force LOD3 for both original and forest pines. See `WORLD/Vegetation/LOD/README.md`; local import/visual performance verification is still required.
+
+## Final Machine FM0 integration
+The original prefab above retains historical Terra Machine dependencies and is not instantiated by FM0. WORLD/Vegetation/Forest/PineForest.cs loads all three existing source models into spatial GPU MultiMeshes with shared transforms and native ranges 70/280/600m. Source art/prefab are unchanged. See WORLD/Vegetation/README.md for collisions, shadows and pending local visual validation.

@@ -1,0 +1,8 @@
+# FM0 pine forest
+Forest/PineForest.cs scatters once using Configuration/ForestMaster.tres. Saved Terrain3D height/normal queries are isolated behind surface.gd. Seeded rejection sampling, minimum spacing, irregular woodland boundaries/glades, upright modestly scaled trees, root burial and steep-slope/high-mountain rejection avoid grids and floating trunks. No grass/saplings/other species.
+
+The original PineTree002.tscn is preserved: its Terra Machine LOD/static-collision helper dependencies are absent here. The isolated forest loads the three source glTF scenes and shares their meshes/materials. Native Terrain3D scene instancing was bypassed for this first pass to preserve explicit three-model LODs without addon-specific scene conversion or duplicating source art.
+
+24m spatial MultiMesh batches use identical conservative bounds and Godot native visibility ranges: 0–70 / 70–280 / 280–600m, 3m hysteresis. All tiers use exactly the same transforms; batch-level switching can still be visible and needs local review. LOD3 casts no shadows; the sun limits all shadows to 100m. Tree height stays approximately 22.6m ±12%. One static body holds shared approximate trunk capsules (no individual processing); collision does not switch with visual LOD. The capsule is intentionally approximate and does not match every branch or modest scale variation.
+
+Cost: one initialization scatter and MultiMesh build, then no forest process callbacks. Rendering, alpha overdraw, spatial batch count and static collision proxies still have costs. This is a finite benchmark, not streaming. Tune attempts/spacing/batch size and distances together after measuring uncapped FPS; no measured FPS improvement is claimed.

@@ -1,0 +1,36 @@
+[gd_resource type="Terrain3DAssets" load_steps=10 format=3]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/GrassGroundAlbedoHeight.png" id="1"]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/GrassGroundNormalRoughness.png" id="2"]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/ForestGround06AlbedoHeight.png" id="3"]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/ForestGround06NormalRoughness.png" id="4"]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/GrayRocksAlbedoHeight.png" id="5"]
+[ext_resource type="Texture2D" path="res://WORLD/Terrain/Configuration/Textures/GrayRocksNormalRoughness.png" id="6"]
+[sub_resource type="Terrain3DTextureAsset" id="Texture0"]
+name = "Meadow"
+id = 0
+albedo_texture = ExtResource("1")
+normal_texture = ExtResource("2")
+uv_scale = 0.25
+normal_depth = 0.7
+detiling_rotation = 0.15
+detiling_shift = 0.1
+[sub_resource type="Terrain3DTextureAsset" id="Texture1"]
+name = "Woodland"
+id = 1
+albedo_texture = ExtResource("3")
+normal_texture = ExtResource("4")
+uv_scale = 0.25
+normal_depth = 0.7
+detiling_rotation = 0.15
+detiling_shift = 0.1
+[sub_resource type="Terrain3DTextureAsset" id="Texture2"]
+name = "Rock"
+id = 2
+albedo_texture = ExtResource("5")
+normal_texture = ExtResource("6")
+uv_scale = 0.25
+normal_depth = 0.7
+detiling_rotation = 0.15
+detiling_shift = 0.1
+[resource]
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Texture0"), SubResource("Texture1"), SubResource("Texture2")])

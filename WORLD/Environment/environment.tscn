@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://WORLD/Environment/daylight.gd" id="1"]
+[node name="Environment" type="WorldEnvironment"]
+script = ExtResource("1")
+current_time = 13.5
+editor_time_enabled = false
+game_time_enabled = false
+clouds_enabled = false
+fog_enabled = false
+sun_energy = 1.2
+[node name="SunLight" type="DirectionalLight3D" parent="."]
+shadow_enabled = true
+directional_shadow_max_distance = 100.0
+directional_shadow_blend_splits = true
+[node name="MoonLight" type="DirectionalLight3D" parent="."]
+shadow_enabled = false
