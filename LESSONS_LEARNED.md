@@ -78,7 +78,7 @@
 
 - **Symptom:** Playing Test 2 stopped inside `addons/sky_3d/src/Sky3D.gd` around line 545 with an invalid `sky.environment` assignment because `sky` was nil.
 - **Cause / uncertainty:** Test 2 reused the Sky3D-based `environment.tscn` without the original test world's initialization/ownership. Sky3D's `_set("environment", ...)` assumes its child sky dome already exists. The precise initialization ordering that triggered this in the owner's editor is not yet independently reproduced.
-- **Fix / prevention:** Test 2 uses its own plain `WorldEnvironment`, `ProceduralSkyMaterial` and `DirectionalLight3D` for preview instead of the runtime Sky3D scene, with a separate one-shot player spawn script. Keep authoring sandboxes independent of heavy environment controllers unless their complete setup contract is included.
+- **Fix / prevention:** Test 2 uses its own plain `WorldEnvironment`, `ProceduralSkyMaterial` and `DirectionalLight3D` for preview instead of the runtime Sky3D scene, with a separate one-shot player spawn script. Keep authoring sandboxes independent of heavy environment controllers unless their complete setup contract is included, and preserve manually authored terrain materials and region data during repairs.
 - **Verification:** Source-reviewed absence of Sky3D from Test 2; owner should reopen Godot, F6 play Test 2, verify the player spawns on terrain and original Test 1 remains unchanged.
 
 ## New entry template
