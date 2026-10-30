@@ -47,7 +47,7 @@
   ],
   "buffers": [
     {
-      "byteLength": 690888,
+      "byteLength": 178728,
       "uri": "pine_tree_001_a_LOD1.bin"
     }
   ],
@@ -55,111 +55,111 @@
     {
       "buffer": 0,
       "byteOffset": 0,
-      "byteLength": 11016
+      "byteLength": 5544
     },
     {
       "buffer": 0,
-      "byteOffset": 11016,
-      "byteLength": 11016
+      "byteOffset": 5544,
+      "byteLength": 5544
     },
     {
       "buffer": 0,
-      "byteOffset": 22032,
-      "byteLength": 14688
+      "byteOffset": 11088,
+      "byteLength": 7392
     },
     {
       "buffer": 0,
-      "byteOffset": 36720,
-      "byteLength": 3672
+      "byteOffset": 18480,
+      "byteLength": 1848
     },
     {
       "buffer": 0,
-      "byteOffset": 40392,
-      "byteLength": 177408
+      "byteOffset": 20328,
+      "byteLength": 43200
     },
     {
       "buffer": 0,
-      "byteOffset": 217800,
-      "byteLength": 177408
+      "byteOffset": 63528,
+      "byteLength": 43200
     },
     {
       "buffer": 0,
-      "byteOffset": 395208,
-      "byteLength": 236544
+      "byteOffset": 106728,
+      "byteLength": 57600
     },
     {
       "buffer": 0,
-      "byteOffset": 631752,
-      "byteLength": 59136
+      "byteOffset": 164328,
+      "byteLength": 14400
     }
   ],
   "accessors": [
     {
       "bufferView": 0,
       "componentType": 5126,
-      "count": 918,
+      "count": 462,
       "type": "VEC3",
       "min": [
-        -0.6389205455780029,
+        -0.6144955158233643,
         -0.1899999976158142,
-        -0.6251034140586853
+        -0.6208768486976624
       ],
       "max": [
-        0.6478936672210693,
+        0.6497803330421448,
         22.450000762939453,
-        0.6551089286804199
+        0.6501707434654236
       ]
     },
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 918,
+      "count": 462,
       "type": "VEC3"
     },
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 918,
+      "count": 462,
       "type": "VEC4"
     },
     {
       "bufferView": 3,
       "componentType": 5125,
-      "count": 918,
+      "count": 462,
       "type": "SCALAR"
     },
     {
       "bufferView": 4,
       "componentType": 5126,
-      "count": 14784,
+      "count": 3600,
       "type": "VEC3",
       "min": [
-        -3.174196481704712,
-        5.664620399475098,
-        -3.5662832260131836
+        -3.163423538208008,
+        5.650760173797607,
+        -2.799983263015747
       ],
       "max": [
-        3.6955063343048096,
-        22.042495727539062,
-        3.4237704277038574
+        3.155240297317505,
+        22.3507080078125,
+        3.636176347732544
       ]
     },
     {
       "bufferView": 5,
       "componentType": 5126,
-      "count": 14784,
+      "count": 3600,
       "type": "VEC3"
     },
     {
       "bufferView": 6,
       "componentType": 5126,
-      "count": 14784,
+      "count": 3600,
       "type": "VEC4"
     },
     {
       "bufferView": 7,
       "componentType": 5125,
-      "count": 14784,
+      "count": 3600,
       "type": "SCALAR"
     }
   ],
@@ -195,9 +195,9 @@
   ],
   "extras": {
     "triangleCounts": {
-      "bark": 306,
-      "foliage": 4928,
-      "total": 5234
+      "bark": 154,
+      "foliage": 1200,
+      "total": 1354
     },
     "heightMeters": 22.64
   }

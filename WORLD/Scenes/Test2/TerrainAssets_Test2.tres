@@ -54,6 +54,18 @@ uv_scale = 0.25
 detiling_rotation = 0.15
 detiling_shift = 0.1
 
+[ext_resource type="PackedScene" path="res://WORLD/Scenes/Test2/PineTree001_Terrain3D.tscn" id="7"]
+
+[sub_resource type="Terrain3DMeshAsset" id="PineTree001Paintable"]
+name = "PineTree001 • Stylized (3 LODs)"
+id = 1
+scene_file = ExtResource("7")
+last_lod = 2
+last_shadow_lod = 1
+lod0_range = 70.0
+lod1_range = 280.0
+lod2_range = 600.0
+
 [resource]
-mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_21wjg")])
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_21wjg"), SubResource("PineTree001Paintable")])
 texture_list = Array[Terrain3DTextureAsset]([SubResource("Texture0"), SubResource("Texture1"), SubResource("Texture2")])
