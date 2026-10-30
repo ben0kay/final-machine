@@ -13,7 +13,7 @@ A **single-room, 6 × 5 m** small cuboid shell with 2.9 m high damaged-plaster w
 
 - `C/SmallBuilding.cs` creates 11 closed box panels at scene initialization: floor, two doorway sides, lintel, three other walls and four roof pieces. No `_Process` or `_PhysicsProcess` callbacks.
 - All panels render in **one MeshInstance3D with two material surfaces**. Each panel has a simple box collision shape owned by the root `StaticBody3D`; there is no doorway collision and no roof collision across the opening.
-- `Materials/DamagedConcrete.tres` and `Materials/DamagedPlaster.tres` reference the existing diffuse, OpenGL normal and roughness texture files directly. Their shared UVs repeat according to physical face size (`TilesPerMetre`) rather than stretching a single texture over each long wall. The displacement maps are deliberately unused for this simple shell.
+- `Materials/DamagedConcrete.tres` and `Materials/DamagedPlaster.tres` reference the existing diffuse and roughness texture files directly. The original EXR normal maps are intentionally not referenced here because their checked-in Godot import files have `valid=false` and they prevent the scene from opening. The normal-map EXRs are preserved in `ASSETS/Material/` for later conversion to a validated PNG or reimport. Their shared UVs repeat according to physical face size (`TilesPerMetre`) rather than stretching a single texture over each long wall. The displacement maps are deliberately unused for this simple shell.
 - The C# tool script previews geometry in the editor after building the solution. Generated children have no scene owner, so saving the scene does not bake duplicate generated nodes. Inspector dimensional changes take effect after reopening/reloading the scene or instancing it anew.
 
 ## Placement in the FM0 test world
@@ -22,4 +22,4 @@ A **single-room, 6 × 5 m** small cuboid shell with 2.9 m high damaged-plaster w
 
 **Scope:** This is a standalone appearance/proportion test, not a building authoring system. Foundation-to-uneven-Terrain3D contact, terrain paint masks, roof access, structural integrity, destruction and save/streaming rules remain outside this pass. On sloped ground the square foundation may float or intersect until it is positioned/leveled.
 
-**Verification:** Source and resource paths reviewed. Local Godot .NET build, shader/normal texture import, editor preview and in-game collision/lighting must be checked by the owner.
+**Verification:** Source/resource paths and both normal-map `.import` records reviewed; they report `valid=false`, while both referenced roughness EXRs have generated import cache paths. Materials now use the colour and roughness textures only. Godot reimport, scene loading, build, preview and in-game collision/lighting still require local owner checks.

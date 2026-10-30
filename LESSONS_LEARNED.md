@@ -37,6 +37,17 @@
 - **Fix / prevention:** Store a list of all accepted centres per spatial cell and test every neighbour in the bounded adjacent cells. Do not assume a cell whose side equals the spacing can hold only one accepted point.
 - **Verification:** Reviewed the corner-case geometry and new bucket/list traversal; .NET build and headless scatter initialization passed. Patch appearance/overdraw still needs local Godot review.
 
+### BLDG-001 — Building scene cannot load when referenced normal-map imports are invalid
+
+**Area:** Structures / PBR textures / Godot imported resources  
+**Affected files:** `WORLD/Structures/SmallBuilding/Materials/*.tres`, `ASSETS/Material/{Floor,Wall}/**/textures/*_nor_gl_1k.exr.import`  
+**Status:** Confirmed missing usable import output; underlying EXR import failure mechanism not diagnosed
+
+- **Symptom:** Godot refuses to open `test.tscn` after instancing the building; missing dependencies name two EXR normal textures.
+- **Cause:** Both referenced normal EXRs have checked-in `.import` records with `valid=false`, so the material's required `Texture2D` resources cannot be resolved. Source files existing in Git does not imply successful engine import.
+- **Fix / prevention:** Remove the invalid normal-map references from the small building's two materials, retaining diffuse and already-imported roughness, and preserve original EXRs for later valid PNG conversion/reimport. Before adding texture paths to a gameplay-required scene, verify actual Godot import success; do not equate a correct repository path with a working engine resource.
+- **Verification performed / still needed:** Inspected repository material paths and normal/roughness `.import` metadata; both normal maps have `valid=false` and roughness maps show generated cache paths. Reopen/import the project in Godot and inspect lighting to verify the fix; it is not yet locally rendered.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title
