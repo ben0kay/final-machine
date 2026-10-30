@@ -1,15 +1,24 @@
-# ForestGrass001 patch scatter — fuller woodland coverage
+# ForestGrass001 forest-floor grass — diffuse growth pass
 
-`GrassScatter.cs` scatters once onto the saved Terrain3D landscape using spatial MultiMeshes. `WORLD/Vegetation/Configuration/GrassMaster.tres` owns its settings. Authored A/B/C mesh, atlas, winding fixes, imports and existing wind material are preserved without source modifications.
+`GrassScatter.cs` builds one deterministic, Terrain3D-grounded scatter into A/B/C LOD1/LOD2 MultiMesh spatial batches. `Configuration/GrassMaster.tres` owns the editable density, patch shape, height, width and 50,000-tuft hard cap. No new vegetation species, source meshes, forest/fern controller, sky, fog, terrain or tree positions were changed in this pass.
 
-**Coverage pass:** 22,000 placement attempts at 0.82 density; minimum patch-centre spacing 6m; radius 3.4–8m; 24–68 target tufts per patch; 6% isolated patches and 0.52m within-patch tuft spacing. Unequal overlapping growth cores and local noise retain negative space and irregular patch edges. Patch radii can overlap naturally.
+## Why this pass
 
-**Height and colour:** scale 0.72–1.20 (previously 0.48–0.72), with short/medium/tall weighted sizes (22% / 62% / 16%). Relative width multipliers 0.94–1.15 counteract the larger absolute scale, so nearby tufts are fuller but not all overly wide. Random yaw, partial normal alignment and subtle existing local/patch green tints remain.
+The previous 2–4 offset cores per patch concentrated even generous tuft budgets into isolated dark, round mounds, leaving large bare-soil gaps between them. This pass samples tufts across the full ellipse using a softened 3/5-lobe irregular perimeter. Patches still rotate/stretch, vary density and overlap; local woodland/ground habitat noise, rock/stream exclusion and isolated growth areas remain. It **does not** promise a mathematically measured ground-cover percentage.
 
-The global MaximumTufts cap is now 45,000 as a safety bound, NOT a target. Visual **30–45% coverage is unmeasured** and must be judged in-engine. More size/density increases alpha overdraw and startup terrain queries; an acceptable uncapped FPS is not demonstrated by triangle counts or fog.
+- Keep 22,000 patch-centre attempts, 0.82 candidate density, 6m centre spacing and 3.4–8m patch radius.
+- Increase tuft targets from 24–68 to **36–90 per patch**, reduce the minimum within-patch tuft separation from 0.52 to **0.40m**, and raise the global safety cap from 45,000 to **50,000**. This is a modest population allowance, not a request to spawn 50,000 everywhere.
+- Prefer an uneven height mix: ~32% short, 54% mid, 14% occasional taller clumps; scale **0.46–0.96** versus 0.72–1.20. Slightly wider relative blade-clump scale (1.18–1.48) helps shorter tufts read as connected ground vegetation rather than tall weeds.
+- Grounded positions, patch/individual tint variance, partial slope alignment, tree trunk clearance, painted rock/hole exclusion and dry channel protection are preserved.
 
-Native `grass_sample` continues checking saved height, normals, holes, rock paint and stream habitat. Tufts avoid kept pine trunks. The central clearing and rocky ground remain mostly free. After the one-shot build, populated patch centres and placed tuft count are exposed, and a completion event triggers the separate fern owner; no grass instance nodes or CPU frame processing are created.
+## New forest-floor colour treatment
 
-Rendering remains A/B/C two-tier MultiMesh: LOD1 0–26m, LOD2 26–72m, material fades 44–68m, no grass collisions or shadows. Grass source triangles: 54–66 near and 24–30 far.
+The active `GrassScatter` runtime material is now `Grass/Materials/ForestFloorGrass.tres`. It keeps the existing, corrected ForestGrass001 source geometry, vertex normals, UVs, wind and fade shader, but uses the **existing greener GrassMeadow002 colour/alpha atlas** with a muted olive `foliage_tint` and modest directional backlight. Original `ForestGrass001Wind_DistanceFade.tres` remains intact; the shader's new tint uniform defaults to pure white, so the original material is unchanged. Green-atlas UV/alpha matching is based on the models' matching vertex/UV/index counts and source lineage, but **has not yet been visually verified in Godot**; inspect all A/B/C and near/far models for correct leaf texture mapping and alpha.
 
-Godot build/rendering/FPS validation is pending. Check visible growth shapes and clearing/rock exclusions, mix of short and tall foliage, all three LODs/lighting directions, wind, fade and uncapped FPS against the prior 21,121-grass-tuft benchmark. If needed reduce PatchDensity/MaximumTufts before increasing draw distance.
+To compare against the previous dark appearance, point the `GD.Load<ShaderMaterial>` material path in `GrassScatter.cs` back to `ASSETS/Vegetation/Grass/ForestGrass001/Materials/ForestGrass001Wind_DistanceFade.tres`.
+
+## Rendering/performance and validation
+
+Existing grass remains two-tier MultiMesh (LOD1 0–26m, LOD2 26–72m) with shader fade 44–68m, 32m batches, no collision or shadow casting, one-time scatter and GPU wind. The increase in tuft allowance can increase placement queries, alpha overdraw and GPU load even with 54–66 near / 24–30 far triangles per tuft. Ferns still target roughly one per six **actual placed** grass tufts up to the separate fern cap; actual ratio can differ because of habitat rejection. The pine forest, fern scatter logic and materials are unchanged.
+
+**Pending owner acceptance:** Pull/reimport, compile and walk the same camera view as the supplied reference screenshot; inspect softer/greener ground coverage, connected patch edges, natural open spaces, leaf atlas/alpha, all three A/B/C and LOD transitions, sun-front/back shading, dark fog/lighting and uncapped FPS. No Godot build, in-engine render or FPS measurement was performed in this pass.

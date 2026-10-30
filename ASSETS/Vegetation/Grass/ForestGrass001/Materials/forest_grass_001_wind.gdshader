@@ -12,6 +12,8 @@ uniform float sparse_distance = 44.0;
 uniform float end_distance = 68.0;
 // Optional restrained, light-dependent transmission. 0 = geometry-only lighting baseline.
 uniform float foliage_backlight_strength : hint_range(0.0,0.35) = 0.12;
+// Optional muted olive tint for forest-floor material; other materials retain white default.
+uniform vec3 foliage_tint : source_color = vec3(1.0);
 varying flat float distance_presence;
 void vertex(){
     vec3 root_world = (MODEL_MATRIX * vec4(0.0,0.0,0.0,1.0)).xyz;
@@ -27,7 +29,7 @@ void vertex(){
 void fragment(){
     if (distance_presence < 0.001) discard;
     vec4 t = texture(grass_atlas,UV);
-    ALBEDO = t.rgb * COLOR.rgb;
+    ALBEDO = t.rgb * COLOR.rgb * foliage_tint;
     ALPHA = t.a;
     ALPHA_SCISSOR_THRESHOLD = alpha_cutoff;
     ROUGHNESS = 0.9;

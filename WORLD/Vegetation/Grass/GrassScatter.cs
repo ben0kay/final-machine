@@ -92,20 +92,21 @@ public partial class GrassScatter : Node3D
             float patchTint = random.RandfRange(1f - Settings.TintVariation, 1f + Settings.TintVariation);
             float size = Mathf.Clamp((radius - minRadius) / Mathf.Max(0.1f, maxRadius - minRadius), 0f, 1f);
             int count = isolated ? random.RandiRange(1, 3) : Mathf.RoundToInt(
-                Mathf.Lerp(minTufts, maxTufts, size) * random.RandfRange(0.65f, 1.15f));
+                Mathf.Lerp(minTufts, maxTufts, size) * random.RandfRange(0.82f, 1.15f));
             count = Mathf.Min(count, maxTufts);
-            // Several unequal overlapping growth cores erase the old uniformly filled ellipse outline.
-            var cores = new Vector2[random.RandiRange(2, 4)];
-            for (int c = 0; c < cores.Length; c++)
-                cores[c] = new Vector2(random.RandfRange(-0.5f, 0.5f), random.RandfRange(-0.5f, 0.5f)) * radius;
+            // Sample the whole growth area, not a few dense cores that look like isolated shrubs.
+            // Two smooth lobes break the circular outline while neighboring patches may overlap.
+            float shapePhase = random.RandfRange(0f, Mathf.Tau);
             var accepted = new List<Vector2>();
             int added = 0;
             for (int j = 0; j < count * 3 && added < count && tuftCount < Settings.MaximumTufts; j++)
             {
-                float distance = Mathf.Sqrt(random.Randf()) * radius * 0.6f;
                 float angle = random.RandfRange(0f, Mathf.Tau);
-                var offset = cores[random.RandiRange(0, cores.Length - 1)] + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
-                offset = new Vector2(offset.X, offset.Y * stretch).Rotated(patchAngle);
+                float lobe = Mathf.Clamp(0.88f + 0.17f * Mathf.Sin(angle * 3f + shapePhase)
+                    + 0.10f * Mathf.Sin(angle * 5f - shapePhase * 0.7f), 0.55f, 1.15f);
+                float distance = Mathf.Sqrt(random.Randf()) * radius * lobe;
+                var offset = new Vector2(Mathf.Cos(angle) * distance, Mathf.Sin(angle) * distance * stretch)
+                    .Rotated(patchAngle);
                 float gx = x + offset.X, gz = z + offset.Y;
                 if (Mathf.Abs(gx) > 470f || Mathf.Abs(gz) > 470f) continue;
                 var point = new Vector2(gx, gz);
@@ -126,8 +127,8 @@ public partial class GrassScatter : Node3D
                 int variant = (int)random.RandiRange(0, 2);
                 // Unequal short/medium/tall distribution keeps nearby tufts from reading as clones.
                 float heightTier = random.Randf();
-                float scaleT = heightTier < 0.22f ? random.RandfRange(0f, 0.40f) :
-                    heightTier < 0.84f ? random.RandfRange(0.32f, 0.84f) : random.RandfRange(0.78f, 1f);
+                float scaleT = heightTier < 0.32f ? random.RandfRange(0f, 0.36f) :
+                    heightTier < 0.86f ? random.RandfRange(0.30f, 0.78f) : random.RandfRange(0.75f, 1f);
                 float scale = Mathf.Lerp(minScale, maxScale, scaleT);
                 float width = scale * random.RandfRange(Settings.MinimumWidth, Settings.MaximumWidth);
                 Vector3 normal = surface.Call("surface_normal", gx, gz).AsVector3();
@@ -151,7 +152,7 @@ public partial class GrassScatter : Node3D
 
         _trunks.Clear();
         var material = GD.Load<ShaderMaterial>(
-            "res://ASSETS/Vegetation/Grass/ForestGrass001/Materials/ForestGrass001Wind_DistanceFade.tres");
+            "res://WORLD/Vegetation/Grass/Materials/ForestFloorGrass.tres");
         if (material == null) { GD.PushError("GrassScatter: ForestGrass001 wind material unavailable."); return; }
 
         for (int lod = 0; lod < 2; lod++)
