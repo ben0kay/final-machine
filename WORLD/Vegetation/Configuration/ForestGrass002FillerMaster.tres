@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ForestGrass002FillerSettings" load_steps=2 format=3]
+[ext_resource type="Script" path="res://WORLD/Vegetation/Grass/ForestGrass002FillerSettings.cs" id="1"]
+[resource]
+script = ExtResource("1")
+Enabled = true
+Seed = 92641
+GridSpacing = 1.95
+Coverage = 0.88
+Jitter = 0.44
+MinimumWoodland = 0.15
+MinimumSurfaceUp = 0.94
+MaximumHeight = 115.0
+TrunkClearance = 1.0
+MaximumTufts = 65000
+MinimumScale = 0.62
+MaximumScale = 1.05
+MinimumWidth = 1.50
+MaximumWidth = 2.10
+TintVariation = 0.04
+NormalAlignment = 0.30
+BatchSize = 40.0
+NearDistance = 22.0
+CullDistance = 56.0

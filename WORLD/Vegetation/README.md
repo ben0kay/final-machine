@@ -7,10 +7,8 @@ The original PineTree002.tscn is preserved: its Terra Machine LOD/static-collisi
 
 Cost: one initialization scatter and MultiMesh build, then no forest process callbacks. Rendering, alpha overdraw, spatial batch count and static collision proxies still have costs. This is a finite benchmark, not streaming. Tune attempts/spacing/batch size and distances together after measuring uncapped FPS; no measured FPS improvement is claimed.
 
-## Active forest floor: Terrain3D demo grass trial
+## Active forest floor: ForestGrass001 and ForestGrass002 filler
 
-The world now renders the installed Terrain3D demo's GPU-particle ribbon grass with a muted forest palette, varied size and much less clod amplification. It samples saved native terrain maps around the camera, avoids rock/holes/steep ground and thins the dry stream centre. See [DemoGrass defaults and rollback](DemoGrass/README.md).
+Two independent, one-shot mesh-grass systems run in `WORLD/Scenes/test.tscn`. The original `GrassScatter` keeps ForestGrass001's clustered patches, two LODs and fern-growth metadata. The new `GrassFiller` fills bare woodland between those patches with the lower-poly ForestGrass002 multi-plane cards; its density, appearance, 65,000-tuft hard cap and 22m/56m LOD distances are independent (`Configuration/ForestGrass002FillerMaster.tres`).
 
-The existing Grass node has RenderGrass=false: no legacy ForestGrass001 meshes/material load or draw batches. Its one-shot metadata still supplies the unchanged fern owner's population/anchors. Original art and [legacy tuning](Grass/README.md) remain available. No tree, terrain, atmosphere, player or HUD changes.
-
-Focused .NET build, shader-language parsing and headless startup passed: 25 emitters / 144,400 potential blade slots, zero old grass draws, 5,927 pines and 7,500 ferns. These are counts, not FPS measurements. Actual GPU execution, shading, coverage, fade and performance remain local checks.
+Both respect Terrain3D habitat, painted rock/hole exclusion, native height/slope and pine-trunk clearance. ForestGrass002 builds batched MultiMeshes once, with no per-frame C# callbacks or grass shadows/collisions. The Terrain3D GPU-particle demo remains disabled; its files are retained for comparison. Fern scatter still uses only ForestGrass001's population/anchors. See [Grass/README.md](Grass/README.md) for tuning. Godot visuals and FPS are pending owner testing.

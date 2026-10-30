@@ -30,3 +30,8 @@ The scene includes one reusable `SmallBuilding.tscn` instance at approximate X=7
 ## Active grass choice (2026-10-30)
 
 `Grass.RenderGrass=true` re-enables the ForestGrass001 two-LOD MultiMesh scatter. The separate `DemoGrass` scene remains instanced for reversibility, but its `DemoGrassMaster.Enabled=false` prevents it from initializing GPU particles. `GrassMaster.tres` now uses width multipliers 1.75–2.25, down from 1.18–1.48, with patch-centre spacing 5.5m (formerly 6m) and the same 50,000-tuft hard cap. Grass height, fern logic, terrain, pines and scene ownership are unchanged. In-engine appearance and FPS acceptance pending.
+
+
+## ForestGrass002 floor-filler layer (2026-10-30)
+
+The `GrassFiller` sibling node adds the existing ForestGrass002 crossed-card tufts between ForestGrass001 patches using a one-shot Terrain3D-grounded jittered grid. Enabled and tuned in `WORLD/Vegetation/Configuration/ForestGrass002FillerMaster.tres`. It leaves ForestGrass001, ferns, pine placements, demo-particle disablement, structures and HUD intact. In-engine coverage, lighting and FPS still require local inspection.

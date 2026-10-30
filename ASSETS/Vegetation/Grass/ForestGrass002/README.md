@@ -38,3 +38,8 @@ The `.gltf` files are editable in Blender using File → Import → glTF 2.0. A 
 - Verified vertex bounds, UV ranges, binary lengths, face winding, calculated normals and per-variant/LOD triangle budgets.
 - No local Godot import, shader rendering, sun-direction test, MSAA review or performance benchmark was available. The screenshot/visual acceptance must be done in your Godot editor.
 - If the base appears too thin under alpha cutout, adjust `alpha_cutoff` from `0.40` down to `0.30` as a test; don't mask invalid winding or normal direction with extra brightness. Look from multiple viewing directions and compare LOD change around your existing ~26m switch.
+
+
+## Main-world use (2026-10-30)
+
+Now used additively by `WORLD/Vegetation/Grass/ForestGrass002Filler.cs`, as `GrassFiller` in the test scene. The original six models, alpha atlas, shader and standalone preview remain unchanged. Whole-tuft world rotation/scale is randomized at scatter time; the individual card yaw/tilt/offsets remain authored in each glTF. Independent density/render settings live in `WORLD/Vegetation/Configuration/ForestGrass002FillerMaster.tres`.
