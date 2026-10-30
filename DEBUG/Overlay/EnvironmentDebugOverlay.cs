@@ -45,14 +45,15 @@ public partial class EnvironmentDebugOverlay : Control
         color.ColorChanged += value => { settings.FogColor = value; environment.Apply(); };
         fog.AddChild(color);
         var light = AddSection(content, "Time / lighting");
-        AddSlider(light, "Time of day", 0, 24, 0.05, settings.Hour, value => { settings.Hour = value; environment.Apply(); }, "clock");
+        AddSlider(light, "Time of day", 0, 24, 0.05, settings.Hour, value => environment.SetHour(value), "clock");
+        AddSlider(light, "Day length (real minutes)", 15, 240, 5, settings.MinutesPerDay, value => { settings.MinutesPerDay = value; environment.Apply(); });
         AddSlider(light, "Sunlight energy", 0, 4, 0.05, settings.SunEnergy, value => { settings.SunEnergy = value; environment.Apply(); }, "0.00");
         AddSlider(light, "Shadow distance (m)", 10, 300, 1, settings.ShadowDistance, value => { settings.ShadowDistance = value; environment.Apply(); });
         var copy = new Button { Text = "Copy Settings" };
         copy.Pressed += () => DisplayServer.ClipboardSet(JsonSerializer.Serialize(new {
             settings.FogEnabled, settings.ClearDistance, settings.FullDistance, settings.AtmosphericDensity,
             FogColor = new[] { settings.FogColor.R, settings.FogColor.G, settings.FogColor.B, 1f },
-            settings.Hour, settings.SunEnergy, settings.ShadowDistance
+            settings.Hour, settings.MinutesPerDay, settings.SunEnergy, settings.ShadowDistance
         }, new JsonSerializerOptions { WriteIndented = true }));
         content.AddChild(copy);
     }

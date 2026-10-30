@@ -7,6 +7,7 @@ public partial class EnvironmentController : Node
     private WorldEnvironment _sky;
     private ShaderMaterial _material;
     private MeshInstance3D _fog;
+    private bool _initialTimeApplied;
     // =========================================================
     // Called once after the world, Sky3D and camera have finished entering the tree.
     public void Initialize(WorldEnvironment sky, Camera3D camera)
@@ -22,6 +23,13 @@ public partial class EnvironmentController : Node
         Apply();
     }
     // =========================================================
+    // Explicit time changes must not be undone by unrelated fog or day-length edits.
+    public void SetHour(float hour)
+    {
+        Settings.Hour = Mathf.Clamp(hour, 0f, 23.9998f);
+        _sky.Set("current_time", Settings.Hour);
+    }
+    // =========================================================
     // No polling: controls apply only when edited. Keep at least a metre between endpoints.
     public void Apply()
     {
@@ -33,7 +41,10 @@ public partial class EnvironmentController : Node
         _sky.Environment.FogEnabled = Settings.AtmosphericDensity > 0;
         _sky.Environment.FogDensity = Settings.AtmosphericDensity;
         _sky.Environment.FogLightColor = Settings.FogColor;
-        _sky.Set("current_time", Mathf.Min(Settings.Hour, 23.9998f));
+        // The authored hour is the initial hour; changing day length must not reset the running clock.
+        _sky.Set("minutes_per_day", Mathf.Clamp(Settings.MinutesPerDay, 1f, 1440f));
+        _sky.Set("game_time_enabled", true);
+        if (!_initialTimeApplied) { _sky.Set("current_time", Mathf.Min(Settings.Hour, 23.9998f)); _initialTimeApplied = true; }
         _sky.Set("sun_energy", Settings.SunEnergy);
         _sky.GetNode<DirectionalLight3D>("SunLight").DirectionalShadowMaxDistance = Settings.ShadowDistance;
     }

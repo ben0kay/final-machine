@@ -8,5 +8,6 @@ FullDistance = 180.0
 FogColor = Color(0.57, 0.65, 0.72, 1)
 AtmosphericDensity = 0.008
 Hour = 13.5
+MinutesPerDay = 60.0
 SunEnergy = 1.2
 ShadowDistance = 100.0

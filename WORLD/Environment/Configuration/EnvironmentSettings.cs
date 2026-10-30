@@ -11,6 +11,7 @@ public partial class EnvironmentSettings : Resource
     [Export] public float AtmosphericDensity { get; set; } = 0.008f;
     [ExportGroup("Lighting")]
     [Export] public float Hour { get; set; } = 13.5f;
+    [Export] public float MinutesPerDay { get; set; } = 60f;
     [Export] public float SunEnergy { get; set; } = 1.2f;
     [Export] public float ShadowDistance { get; set; } = 100;
 }
