@@ -20,6 +20,21 @@ Final Machine is a **fresh repository**, not a migration-in-place of [Terra Mach
 
 **Immediate quality bar:** Walking slowly through the forest at player eye level should already feel atmospheric. A forest that looks excellent at 256 × 256 m is more valuable than a bland, untested 20 × 20 km world.
 
+### Atmosphere — persistently foggy, eerie wilderness
+
+**Final Machine should feel unsettling even in broad daylight.** The intended world is frequently **heavily foggy or misty throughout the day**, not just at night, dawn or during occasional weather events. Picture a quiet grey-blue forest where nearby trunks are readable, distant pines dissolve into haze, mountain silhouettes disappear into the distance, and it is never completely obvious what may be watching just beyond visibility. Daytime should remain navigable and visually interesting, but retain that spooky, isolated, slightly oppressive atmosphere.
+
+This is both an **art direction** and a **practical rendering strategy**: intentionally limited visibility can mask distant terrain/foliage LOD changes, hard visual cutoffs, repetitive distant forests and some rendering limitations, while giving the world a distinctive mood. It must **not** replace correct near-field geometry, materials, shadowing or fixing obvious graphical bugs. Treat fog as one part of the visual design, not a license to leave the visible world unfinished.
+
+- Prefer **soft camera-distance fog** with nearby woodland relatively clear and background terrain/trees gradually fading into an atmospheric sky-matched colour, without an obvious fog wall or clear-sky horizon seam.
+- As an **initial tuning experiment**, keep approximately **60 m clear**, reaching **strong/fully obscuring fog around 180 m**; these are adjustable starting values, not fixed gameplay requirements. Heavier and lighter weather or location-specific conditions can come later.
+- Give the owner **F1 runtime debug controls** for fog enable, clear distance, end distance, colour/intensity, time of day and relevant lighting. Use the existing Sky3D setup and keep debug changes runtime-only unless explicitly saved.
+- Favor believable, desaturated daylight and forest shadow; the forest can be creepy at noon without being uniformly dark or permanently nighttime.
+- Where dense fog makes far LODs fully invisible, **investigate separate fog-aware rendering/culling optimizations** after the fog appearance is accepted. Fog alone does not unload trees or guarantee GPU savings.
+- Fog-related AI sight/hearing and gameplay stealth can be explored later; don't make visuals automatically change zombie perception until that mechanic is explicitly designed.
+
+**Guiding image:** Walking quietly between tall pines on an overcast afternoon, unable to see far through the mist, with only occasional glimpses of a clearing, an abandoned house or a dark ridge ahead.
+
 ## Terrain3D decision — why we changed direction
 
 Terra Machine explored smooth Voxel Tools terrain because unrestricted ground excavation initially seemed essential. After clarifying the gameplay, **the desired digging is mostly shallow trenches and animal/zombie pits**, not player-carved tunnels through hillsides. The higher priorities are **beautiful open landscapes, efficient heightmap/texture authoring, foliage and an eventual large finite procedural world**.
@@ -65,7 +80,7 @@ Do not create empty placeholders or migrate entire old directory trees simply to
 - One compelling **~256 × 256 m** forest/wilderness section: believable hills, a slope/cliff, a clearing, dense mature trees and natural woodland understory.
 - Ground materials with convincing scale and blending: soil, sparse grass, leaf litter, moss, rock; avoid obvious texture tiling, bright painted circles and artificial vegetation clumps.
 - Layered vegetation: mature canopy, saplings, bushes/ferns, grass, fallen branches and rocks. Mixed spacing, height, species and canopy density should make woodland feel naturally grown.
-- Atmospheric sun/shadow/sky and restrained haze; forest canopy should genuinely block some light. Avoid using fog to disguise missing assets.
+- **Deliberately heavy, atmospheric daytime fog** and coherent sun/shadow/sky; forest canopy should still provide meaningful shade. Use fog to soften distant visibility and LOD/rendering limitations, **not** to excuse broken nearby assets or obvious visual errors.
 - Quality judged **in first person**: the view while moving slowly through forest matters more than a top-down overview.
 - Profile the actual cost of trees, shadow rendering, alpha foliage, materials and ground shaders. Use instancing, suitable LODs, shadow distance rules, billboards/impostors where justified, and properly sleeping distant systems.
 
