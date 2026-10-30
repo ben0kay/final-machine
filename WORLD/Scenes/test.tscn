@@ -29,7 +29,9 @@ position = Vector3(0, 200, 20)
 [node name="FPS" type="Label" parent="HUD"]
 offset_left = 16.0
 offset_top = 12.0
-text = "Loading terrain…"
+text = "Loading terrain… | — prims"
+mouse_filter = 2
+theme_override_font_sizes/font_size = 13
 theme_override_colors/font_shadow_color = Color(0,0,0,1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
