@@ -45,3 +45,7 @@ Then use this `ShaderMaterial` on **surface 1** of the imported PineTree001 mode
 - Confirmed glTF+bin byte lengths, source attribute counts, face winding, normals, triangle counts, surface order and vertex-colour ranges using the authored generator.
 - Source normals are geometric flat-face normals; no reversed triangles or zero-area faces were intended. Software preview checks silhouettes, not Godot material/culling behaviour.
 - **Not tested in Godot:** actual render, material uniform palette changes, light/front/back behaviour, imported glTF surface colours, shadowing, LOD transitions or FPS. Verify before changing the main forest.
+
+## Test 2 Terrain3D instancer
+
+`WORLD/Scenes/Test2/PineTree001_Terrain3D.tscn` is a **separate paintable three-LOD wrapper** for the editor; `WORLD/Scenes/Test2/TerrainAssets_Test2.tres` registers it only in Test 2. The wrapper uses the existing authored GLTFs (no re-export), with Terrain3D distance ranges 70/280/600m and shadows disabled at the farthest LOD. See `WORLD/Scenes/README.md` for painting instructions and important limitations: the imported vertex-colour materials are used initially, not the preview-only custom shader/tint or custom trunk collision proxies. Do not alter the active forest until the owner accepts the Test 2 appearance.
