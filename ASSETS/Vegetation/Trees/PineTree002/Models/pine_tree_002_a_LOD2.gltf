@@ -1,0 +1,275 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Terra Machine PineTree002 distant canopy: 500 broad source cards + reduced source trunk"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "PineTree002",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "pine_tree_002_a_LOD2",
+      "mesh": 0
+    }
+  ],
+  "meshes": [
+    {
+      "name": "pine_tree_002_a_LOD2",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        },
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "Pine_Bark_PBR",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.92,
+        "metallicRoughnessTexture": {
+          "index": 2
+        }
+      },
+      "normalTexture": {
+        "index": 1,
+        "scale": 0.8
+      },
+      "doubleSided": false
+    },
+    {
+      "name": "Pine_Needles_LushDistance_AlphaCutout",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9
+      },
+      "alphaMode": "MASK",
+      "alphaCutoff": 0.29,
+      "doubleSided": true
+    }
+  ],
+  "textures": [
+    {
+      "source": 0,
+      "sampler": 0
+    },
+    {
+      "source": 1,
+      "sampler": 0
+    },
+    {
+      "source": 2,
+      "sampler": 0
+    },
+    {
+      "source": 3,
+      "sampler": 0
+    }
+  ],
+  "images": [
+    {
+      "name": "pine_bark_diff_1k",
+      "uri": "../Textures/pine_bark_diff_1k.png",
+      "mimeType": "image/png"
+    },
+    {
+      "name": "pine_bark_nor_gl_1k",
+      "uri": "../Textures/pine_bark_nor_gl_1k.png",
+      "mimeType": "image/png"
+    },
+    {
+      "name": "pine_bark_rough_1k",
+      "uri": "../Textures/pine_bark_rough_1k.png",
+      "mimeType": "image/png"
+    },
+    {
+      "name": "pine_needles_distance_full_2k",
+      "uri": "../Textures/pine_needles_distance_full_2k.png",
+      "mimeType": "image/png"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 100,
+      "type": "VEC3",
+      "min": [
+        -0.7140601277351379,
+        -0.1899999976158142,
+        -0.6612957119941711
+      ],
+      "max": [
+        0.7757856249809265,
+        22.400859832763672,
+        0.8210433125495911
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 100,
+      "type": "VEC3",
+      "min": [
+        -0.9398778676986694,
+        -0.05782085284590721,
+        -0.9847135543823242
+      ],
+      "max": [
+        1.0,
+        0.05745570361614227,
+        0.9846057295799255
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 100,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5125,
+      "count": 486,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 2000,
+      "type": "VEC3",
+      "min": [
+        -4.1695661544799805,
+        3.7137017250061035,
+        -4.239565849304199
+      ],
+      "max": [
+        4.317544460296631,
+        22.43698501586914,
+        4.444199562072754
+      ]
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 2000,
+      "type": "VEC3",
+      "min": [
+        -0.9237930774688721,
+        0.31764543056488037,
+        -0.921676754951477
+      ],
+      "max": [
+        0.9231441020965576,
+        1.0,
+        0.921824038028717
+      ]
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 2000,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 7,
+      "componentType": 5125,
+      "count": 3000,
+      "type": "SCALAR"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 1200,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1200,
+      "byteLength": 1200,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 2400,
+      "byteLength": 800,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 3200,
+      "byteLength": 1944,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 5144,
+      "byteLength": 24000,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 29144,
+      "byteLength": 24000,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 53144,
+      "byteLength": 16000,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 69144,
+      "byteLength": 12000,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 81144,
+      "uri": "pine_tree_002_a_LOD2.bin"
+    }
+  ]
+}
