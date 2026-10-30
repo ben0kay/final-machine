@@ -1,0 +1,63 @@
+[gd_resource type="Terrain3DAssets" format=3]
+
+[ext_resource type="Texture2D" path="res://ASSETS/Terrain/WarMachineGround037/Textures/ground037_alb_ht.png" id="1"]
+[ext_resource type="Texture2D" path="res://ASSETS/Terrain/WarMachineGround037/Textures/ground037_nrm_rgh.png" id="2"]
+[ext_resource type="Texture2D" path="res://ASSETS/Terrain/WarMachineGround037/Textures/ground037_alb_ht.png" id="3"]
+[ext_resource type="Texture2D" path="res://ASSETS/Terrain/WarMachineGround037/Textures/ground037_nrm_rgh.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cypjqum5i21ut" path="res://WORLD/Terrain/Configuration/Textures/GrayRocksAlbedoHeight.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://kb0jr5gssil4" path="res://WORLD/Terrain/Configuration/Textures/GrayRocksNormalRoughness.png" id="6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uq7h"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_swo2r"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_4uq7h")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DTextureAsset" id="Texture0"]
+name = "Meadow"
+albedo_texture = ExtResource("1")
+normal_texture = ExtResource("2")
+albedo_color = Color(0.67451, 0.74902, 0.686275, 1)
+normal_depth = 1.0
+ao_strength = 2.0
+uv_scale = 0.2
+detiling_rotation = 0.161
+detiling_shift = 0.1
+
+[sub_resource type="Terrain3DTextureAsset" id="Texture1"]
+name = "Woodland"
+id = 1
+albedo_texture = ExtResource("3")
+normal_texture = ExtResource("4")
+albedo_color = Color(0.67451, 0.74902, 0.686275, 1)
+normal_depth = 1.0
+ao_strength = 2.0
+uv_scale = 0.2
+detiling_rotation = 0.161
+detiling_shift = 0.1
+
+[sub_resource type="Terrain3DTextureAsset" id="Texture2"]
+name = "Rock"
+id = 2
+albedo_texture = ExtResource("5")
+normal_texture = ExtResource("6")
+normal_depth = 0.7
+uv_scale = 0.25
+detiling_rotation = 0.15
+detiling_shift = 0.1
+
+[resource]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_swo2r")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Texture0"), SubResource("Texture1"), SubResource("Texture2")])

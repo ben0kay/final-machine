@@ -29,3 +29,7 @@ Source art is unchanged byte-for-byte, preserved via original Git blob SHA. Godo
 - Ground037: https://ambientcg.com/view?id=Ground037
 - Rock023: https://ambientcg.com/view?id=Rock023
 - CC0 1.0 Universal; see `SOURCE_LICENSE.txt`.
+
+## Test-world Ground037 application (2026-10-30)
+
+Final Machine's active `WORLD/Scenes/test.tscn` now overrides **only the two ground texture IDs (0 Meadow / 1 Woodland)** using `WORLD/Terrain/Configuration/TerrainAssetsGround037_Test.tres`. Both ground slots use the existing War Machine Ground037 files and muted tint/UV settings; the original **Rock ID 2** and painted cliff controls are preserved. `WORLD/Terrain/Configuration/TerrainAssets.tres`, Test2 assets and the saved region files are untouched. The full War Machine Terrain3DMaterial/dual-scaling remains inactive. See `WORLD/Terrain/README.md` for exact details and revert steps.

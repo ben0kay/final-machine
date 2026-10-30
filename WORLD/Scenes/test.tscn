@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=19 format=3]
 [ext_resource type="Script" path="res://WORLD/Scenes/TestWorld.cs" id="1"]
 [ext_resource type="PackedScene" path="res://WORLD/Terrain/Integration/Terrain3D/terrain.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://PLAYER/player.tscn" id="3"]
@@ -16,9 +16,11 @@
 [ext_resource type="PackedScene" path="res://WORLD/Vegetation/DemoGrass/demo_grass.tscn" id="15"]
 [ext_resource type="Script" path="res://WORLD/Vegetation/Grass/ForestGrass002Filler.cs" id="16"]
 [ext_resource type="Resource" path="res://WORLD/Vegetation/Configuration/ForestGrass002FillerMaster.tres" id="17"]
+[ext_resource type="Terrain3DAssets" path="res://WORLD/Terrain/Configuration/TerrainAssetsGround037_Test.tres" id="18"]
 [node name="TestWorld" type="Node3D"]
 script = ExtResource("1")
 [node name="Terrain" parent="." instance=ExtResource("2")]
+assets = ExtResource("18")
 [node name="Environment" parent="." instance=ExtResource("4")]
 [node name="Forest" type="Node3D" parent="."]
 script = ExtResource("5")

@@ -2,6 +2,18 @@
 
 Terrain3D **1.0.2**, sixteen 256m regions at 1m spacing: 1024 × 1024m. Terrain3D owns saved heights, paint and collision. No voxel code or custom terrain shader. Game startup never generates, imports, repaints or saves terrain.
 
+# Test-world Ground037 override — 2026-10-30
+
+`WORLD/Scenes/test.tscn` overrides the instanced Terrain3D node's `assets` property with `Configuration/TerrainAssetsGround037_Test.tres`. This is only a material palette change in the existing Terrain3D test world: no heights, saved painted texture IDs, geometry, native regions, collision, procedural grass or tree placement data were changed.
+
+**Ground texture slots 0 and 1** retain their original `Meadow` and `Woodland` names and numeric IDs to protect Terrain3D painting and the existing grass habitat rules. Both now sample the copied War Machine/ambientCG CC0 **Ground037** albedo-height and normal-roughness maps under `ASSETS/Terrain/WarMachineGround037/Textures/`; the tint `Color(0.67451, 0.74902, 0.686275, 1)`, `uv_scale=0.2`, `detiling_rotation=0.161`, AO strength 2, and normal depth 1 follow War Machine's grass ground reference. The two ground slots intentionally share the same maps: the former meadow/woodland colour contrast is temporarily absent while comparing the simplified ground look.
+
+**Rock texture slot 2 is identical** to the original `Configuration/TerrainAssets.tres`: `GrayRocksAlbedoHeight.png`, `GrayRocksNormalRoughness.png`, ID 2, existing UV/detiling and normal strength. Painted rock/cliff areas remain rock. Original terrain shader/auto-slope behaviour remains unchanged; this pass does not add new rock painting or copy War Machine's cliff shader/rock art.
+
+**Revert:** remove the local `assets = ExtResource("18")` property override from the `Terrain` instance in `WORLD/Scenes/test.tscn` (and remove the matching ext_resource declaration), returning it to the original `WORLD/Terrain/Configuration/TerrainAssets.tres` referenced by `Integration/Terrain3D/terrain.tscn`. The source asset collection and Test2 asset collection remain untouched.
+
+The separate `WarMachineTerrainMaterial.tres` with War Machine's macro variation/dual scaling is **not activated**; this test reproduces the Ground037 material asset settings, not the entire War Machine terrain look. Review the original painted rock boundary and ground detail at normal first-person height after pulling. The switch and rendering have not been verified inside Godot; a Git commit is not a render test.
+
 ## Active geography and recoverable baseline
 
 `Integration/Terrain3D/terrain.tscn` now loads **Landscape/RegionsEnhancedV1**. The original **Landscape/Regions** files are retained byte-for-byte as the recoverable pre-enhancement baseline. To roll terrain back, change only the scene's `data_directory` to `res://WORLD/Terrain/Landscape/Regions`; the integration disables stream habitat rules when the enhancement snapshot is absent. Grass distribution tuning is independent.
