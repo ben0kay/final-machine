@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public partial class GrassScatter : Node3D
 {
+    [Export] public bool RenderGrass { get; set; } = true;
     [Export] public GrassSettings Settings { get; set; }
     [Export] public NodePath SurfacePath { get; set; }
     [Export] public NodePath ForestPath { get; set; }
@@ -151,28 +152,32 @@ public partial class GrassScatter : Node3D
         }
 
         _trunks.Clear();
-        var material = GD.Load<ShaderMaterial>(
-            "res://WORLD/Vegetation/Grass/Materials/ForestFloorGrass.tres");
-        if (material == null) { GD.PushError("GrassScatter: ForestGrass001 wind material unavailable."); return; }
-
-        for (int lod = 0; lod < 2; lod++)
-        for (int variant = 0; variant < 3; variant++)
+        // Keep existing habitat/count metadata for FernScatter while disabling all legacy grass draws.
+        if (RenderGrass)
         {
-            char letter = (char)('a' + variant);
-            string path = "res://ASSETS/Vegetation/Grass/ForestGrass001/Models/forest_grass_001_" +
-                letter + "_LOD" + (lod + 1) + ".gltf";
-            var packed = GD.Load<PackedScene>(path);
-            if (packed == null) { GD.PushError("GrassScatter: Missing model " + path); continue; }
-            var source = packed.Instantiate<Node3D>();
-            foreach (var entry in batches)
-                if (entry.Value[variant].Count > 0)
-                    AddMeshes(source, Transform3D.Identity, entry.Key, entry.Value[variant], batchSize, lod, material);
-            source.Free();
+            var material = GD.Load<ShaderMaterial>(
+                "res://WORLD/Vegetation/Grass/Materials/ForestFloorGrass.tres");
+            if (material == null) { GD.PushError("GrassScatter: ForestGrass001 wind material unavailable."); return; }
+
+            for (int lod = 0; lod < 2; lod++)
+            for (int variant = 0; variant < 3; variant++)
+            {
+                char letter = (char)('a' + variant);
+                string path = "res://ASSETS/Vegetation/Grass/ForestGrass001/Models/forest_grass_001_" +
+                    letter + "_LOD" + (lod + 1) + ".gltf";
+                var packed = GD.Load<PackedScene>(path);
+                if (packed == null) { GD.PushError("GrassScatter: Missing model " + path); continue; }
+                var source = packed.Instantiate<Node3D>();
+                foreach (var entry in batches)
+                    if (entry.Value[variant].Count > 0)
+                        AddMeshes(source, Transform3D.Identity, entry.Key, entry.Value[variant], batchSize, lod, material);
+                source.Free();
+            }
         }
         PlacedTufts = tuftCount;
         IsBuilt = true;
         GD.Print("GrassScatter: " + _growthCenters.Count + " populated patches, " + tuftCount +
-            " tufts across " + batches.Count + " cells; no grass process callbacks.");
+            " tufts across " + batches.Count + " cells; render=" + RenderGrass + "; no grass process callbacks.");
         ScatterFinished?.Invoke();
     }
 

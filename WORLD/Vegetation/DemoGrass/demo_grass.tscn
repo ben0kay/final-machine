@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3]
+[ext_resource type="Script" path="res://WORLD/Vegetation/DemoGrass/demo_grass.gd" id="1"]
+[ext_resource type="Resource" path="res://WORLD/Vegetation/Configuration/DemoGrassMaster.tres" id="2"]
+[sub_resource type="RibbonTrailMesh" id="Blade"]
+shape = 0
+section_length = 0.18
+section_segments = 1
+[node name="DemoGrass" type="Node3D"]
+script = ExtResource("1")
+settings = ExtResource("2")
+terrain_path = NodePath("../Terrain")
+mesh = SubResource("Blade")
+shadow_mode = 0

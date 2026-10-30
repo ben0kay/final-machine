@@ -48,6 +48,17 @@
 - **Fix / prevention:** Remove the invalid normal-map references from the small building's two materials, retaining diffuse and already-imported roughness, and preserve original EXRs for later valid PNG conversion/reimport. Before adding texture paths to a gameplay-required scene, verify actual Godot import success; do not equate a correct repository path with a working engine resource.
 - **Verification performed / still needed:** Inspected repository material paths and normal/roughness `.import` metadata; both normal maps have `valid=false` and roughness maps show generated cache paths. Reopen/import the project in Godot and inspect lighting to verify the fix; it is not yet locally rendered.
 
+### VEG-003 — GPU particle start processors cannot exit with return
+
+**Area:** Vegetation / Godot particle shader integration
+**Affected:** WORLD/Vegetation/DemoGrass/Materials/forest_particles.gdshader
+**Status:** Confirmed by Godot shader parser
+
+- **Symptom:** Emitters exist but Godot reports shader compilation failure.
+- **Cause:** Early return statements are invalid inside the start() processor, including after ACTIVE=false for rejection.
+- **Fix / prevention:** Set ACTIVE=false; use a valid-region conditional around map sampling instead of processor returns. Avoid invalid array layers and nonfinite positions.
+- **Verification:** Initial startup reported this exact parser error; corrected shader parsing and the focused scene check passed. Actual GPU rendering/performance remain local checks.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title

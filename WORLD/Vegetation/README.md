@@ -7,10 +7,10 @@ The original PineTree002.tscn is preserved: its Terra Machine LOD/static-collisi
 
 Cost: one initialization scatter and MultiMesh build, then no forest process callbacks. Rendering, alpha overdraw, spatial batch count and static collision proxies still have costs. This is a finite benchmark, not streaming. Tune attempts/spacing/batch size and distances together after measuring uncapped FPS; no measured FPS improvement is claimed.
 
-## Forest floor: grass + ferns
+## Active forest floor: Terrain3D demo grass trial
 
-`Grass/GrassScatter.cs` now spreads the existing ForestGrass001 A/B/C models throughout irregular overlapping woodland patches rather than concentrating them in 2–4 small cores. It deliberately includes shorter/wider ground-cover clumps, a modestly larger tuft budget and a new active muted-green forest-floor material using the existing GrassMeadow002 atlas. The original dark material and source models are preserved for quick comparison. See [grass authoring and tuning](Grass/README.md) and [vegetation asset guide](../../ASSETS/Vegetation/VISUAL_AUTHORING_GUIDE.md).
+The world now renders the installed Terrain3D demo's GPU-particle ribbon grass with a muted forest palette, varied size and much less clod amplification. It samples saved native terrain maps around the camera, avoids rock/holes/steep ground and thins the dry stream centre. See [DemoGrass defaults and rollback](DemoGrass/README.md).
 
-`Ferns/FernScatter.cs` is unchanged: it follows the actual populated grass patch centres and places Ferns001 at an approximate 6:1 grass-to-fern target, bounded by its own cap and terrain checks. See [fern tuning](Ferns/README.md).
+The existing Grass node has RenderGrass=false: no legacy ForestGrass001 meshes/material load or draw batches. Its one-shot metadata still supplies the unchanged fern owner's population/anchors. Original art and [legacy tuning](Grass/README.md) remain available. No tree, terrain, atmosphere, player or HUD changes.
 
-Both use saved Terrain3D habitat/rock/hole/stream/trunk exclusions, spatial GPU MultiMesh batches, no foliage collisions or shadows and no per-frame CPU updates. More grass coverage may increase one-shot setup and alpha overdraw despite unchanged LOD distances. No trees, terrain, fog or environment settings changed. This appearance pass has not been compiled or visually validated in Godot; user acceptance and uncapped FPS remain pending.
+Focused .NET build, shader-language parsing and headless startup passed: 25 emitters / 144,400 potential blade slots, zero old grass draws, 5,927 pines and 7,500 ferns. These are counts, not FPS measurements. Actual GPU execution, shading, coverage, fade and performance remain local checks.

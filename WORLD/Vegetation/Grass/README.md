@@ -1,3 +1,5 @@
+> **Currently disabled visually:** Grass.RenderGrass=false in the test scene skips old mesh/material loading and draw creation. Placement metadata still feeds ferns. Active grass and rollback instructions: [Terrain3D demo grass](../DemoGrass/README.md). Below describes the preserved legacy option.
+
 # ForestGrass001 forest-floor grass — diffuse growth pass
 
 `GrassScatter.cs` builds one deterministic, Terrain3D-grounded scatter into A/B/C LOD1/LOD2 MultiMesh spatial batches. `Configuration/GrassMaster.tres` owns the editable density, patch shape, height, width and 50,000-tuft hard cap. No new vegetation species, source meshes, forest/fern controller, sky, fog, terrain or tree positions were changed in this pass.

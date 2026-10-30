@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DemoGrassSettings" load_steps=2 format=3]
+[ext_resource type="Script" path="res://WORLD/Vegetation/DemoGrass/DemoGrassSettings.cs" id="1"]
+[resource]
+script = ExtResource("1")
+Enabled = true
+Spacing = 0.3125
+CellWidth = 24.0
+GridWidth = 5
+MinimumHeight = 0.4
+MaximumHeight = 0.7
+MinimumWidth = 0.085
+MaximumWidth = 0.13
+WindStrength = 0.32
+RootColor = Color(0.22, 0.30, 0.12, 1)
+TipColor = Color(0.45, 0.56, 0.25, 1)
