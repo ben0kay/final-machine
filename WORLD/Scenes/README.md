@@ -26,3 +26,7 @@ The test scene also owns `Grass` and `Ferns` nodes. Grass builds after the pines
 ## Test-world structure preview
 
 The scene includes one reusable `SmallBuilding.tscn` instance at approximate X=7, Z=4 (ahead/right of the player spawn), with its open +Z doorway facing the player. The hierarchy is `WorldActorsRoot/PersistentPropsRoot/Structures/SmallBuilding`; the existing player and other scene roots are left untouched. Once the original terrain collision spawn ray succeeds, `TestWorld.cs` makes one saved-Terrain3D `surface_height` query at the building centre and aligns the building floor to that elevation, with no additional per-frame work. This is a one-point level placement only, not terrain flattening; foundation edges on edited uneven terrain may need manual adjustment. See `../Structures/SmallBuilding/README.md` for the asset and its optional standalone preview scene.
+
+## Active grass choice (2026-10-30)
+
+`Grass.RenderGrass=true` re-enables the ForestGrass001 two-LOD MultiMesh scatter. The separate `DemoGrass` scene remains instanced for reversibility, but its `DemoGrassMaster.Enabled=false` prevents it from initializing GPU particles. `GrassMaster.tres` now uses width multipliers 1.75–2.25, down from 1.18–1.48, with patch-centre spacing 5.5m (formerly 6m) and the same 50,000-tuft hard cap. Grass height, fern logic, terrain, pines and scene ownership are unchanged. In-engine appearance and FPS acceptance pending.

@@ -25,7 +25,7 @@ SurfacePath = NodePath("../Terrain")
 [node name="Grass" type="Node3D" parent="."]
 script = ExtResource("10")
 Settings = ExtResource("11")
-RenderGrass = false
+RenderGrass = true
 SurfacePath = NodePath("../Terrain")
 ForestPath = NodePath("../Forest")
 [node name="DemoGrass" parent="." instance=ExtResource("15")]

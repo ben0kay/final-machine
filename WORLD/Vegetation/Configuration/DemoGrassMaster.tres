@@ -2,7 +2,7 @@
 [ext_resource type="Script" path="res://WORLD/Vegetation/DemoGrass/DemoGrassSettings.cs" id="1"]
 [resource]
 script = ExtResource("1")
-Enabled = true
+Enabled = false
 Spacing = 0.3125
 CellWidth = 24.0
 GridWidth = 5

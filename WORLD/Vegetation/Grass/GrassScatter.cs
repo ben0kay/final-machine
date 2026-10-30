@@ -152,7 +152,7 @@ public partial class GrassScatter : Node3D
         }
 
         _trunks.Clear();
-        // Keep existing habitat/count metadata for FernScatter while disabling all legacy grass draws.
+        // Keep habitat/count metadata for FernScatter; render the mesh batches when enabled.
         if (RenderGrass)
         {
             var material = GD.Load<ShaderMaterial>(
@@ -242,8 +242,8 @@ public partial class GrassScatter : Node3D
                 maxY = Mathf.Max(maxY, grass[i].Transform.Origin.Y);
             }
             multi.CustomAabb = new Aabb(
-                new Vector3(-2f, minY - 2f, -2f),
-                new Vector3(batchSize + 4f, maxY - minY + 5f, batchSize + 4f));
+                new Vector3(-3.5f, minY - 2f, -3.5f),
+                new Vector3(batchSize + 7f, maxY - minY + 5f, batchSize + 7f));
             float split = Mathf.Min(Settings.NearDistance, Settings.CullDistance - 1f);
             var instance = new MultiMeshInstance3D {
                 Multimesh = multi,

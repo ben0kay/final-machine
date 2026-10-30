@@ -10,7 +10,7 @@ public partial class GrassSettings : Resource
     [Export(PropertyHint.Range, "0,1,0.01")] public float PatchDensity { get; set; } = 0.82f;
     [Export(PropertyHint.Range, "0,1,0.01")] public float MinimumWoodland { get; set; } = 0.18f;
     [Export(PropertyHint.Range, "0,1,0.01")] public float NoiseThreshold { get; set; } = 0.35f;
-    [Export(PropertyHint.Range, "2,12,0.5")] public float MinimumPatchSpacing { get; set; } = 6.0f;
+    [Export(PropertyHint.Range, "2,12,0.5")] public float MinimumPatchSpacing { get; set; } = 5.5f;
     [Export(PropertyHint.Range, "1,6,0.1")] public float MinimumPatchRadius { get; set; } = 3.4f;
     [Export(PropertyHint.Range, "1,8,0.1")] public float MaximumPatchRadius { get; set; } = 8.0f;
     [Export(PropertyHint.Range, "1,60,1")] public int MinimumTuftsPerPatch { get; set; } = 36;
@@ -28,8 +28,8 @@ public partial class GrassSettings : Resource
     [Export(PropertyHint.Range, "0.1,2,0.01")] public float MaximumScale { get; set; } = 0.96f;
     [Export(PropertyHint.Range, "0,0.1,0.005")] public float TintVariation { get; set; } = 0.035f;
 
-    [Export(PropertyHint.Range, "0.5,2,0.05")] public float MinimumWidth { get; set; } = 1.18f;
-    [Export(PropertyHint.Range, "0.5,2,0.05")] public float MaximumWidth { get; set; } = 1.48f;
+    [Export(PropertyHint.Range, "0.5,2.75,0.05")] public float MinimumWidth { get; set; } = 1.75f;
+    [Export(PropertyHint.Range, "0.5,2.75,0.05")] public float MaximumWidth { get; set; } = 2.25f;
     [Export(PropertyHint.Range, "0,1,0.05")] public float NormalAlignment { get; set; } = 0.35f;
 
     [ExportGroup("Rendering")]

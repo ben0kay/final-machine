@@ -1,8 +1,16 @@
-> **Currently disabled visually:** Grass.RenderGrass=false in the test scene skips old mesh/material loading and draw creation. Placement metadata still feeds ferns. Active grass and rollback instructions: [Terrain3D demo grass](../DemoGrass/README.md). Below describes the preserved legacy option.
+> **Active in the test world:** `Grass.RenderGrass=true`; the Terrain3D GPU-particle demo is disabled through `DemoGrassMaster.Enabled=false`. The existing A/B/C ForestGrass001 MultiMesh scatter renders again, and still provides the placement metadata for ferns.
 
 # ForestGrass001 forest-floor grass — diffuse growth pass
 
 `GrassScatter.cs` builds one deterministic, Terrain3D-grounded scatter into A/B/C LOD1/LOD2 MultiMesh spatial batches. `Configuration/GrassMaster.tres` owns the editable density, patch shape, height, width and 50,000-tuft hard cap. No new vegetation species, source meshes, forest/fern controller, sky, fog, terrain or tree positions were changed in this pass.
+
+## Latest wider-tuft appearance pass
+
+With ForestGrass001 re-enabled, the test world uses **1.75–2.25 width multipliers** (formerly 1.18–1.48) for substantially broader, lower-looking tufts at the **same vertical scale**. Individual nominal width is roughly 1.5× the prior value, so the approximate horizontal footprint can be over twice as large; real ground coverage depends on mesh silhouette and habitat. Patch-centre minimum spacing is modestly reduced from 6.0m to 5.5m to reach more of the forest floor. The cap remains **50,000 tufts**, and existing slope/rock/trunk filtering, lod distances and ferns are preserved. Spatial MultiMesh bounds now allow 3.5m side padding for the wider visuals. This does not increase per-tuft triangles or claim an FPS improvement.
+
+The newly authored **fine-blade replacement ZIP is not installed by this configuration-only GitHub change**: the game uses whichever `ForestGrass001/Models`, shader and atlas are present locally. Extract that ZIP into the Godot project root if the finer replacement files have not yet been applied, and inspect the active `ForestFloorGrass.tres` material. After applying the ZIP, commit its updated binary assets separately if they should persist on GitHub.
+
+## Previous diffuse-growth pass
 
 ## Why this pass
 

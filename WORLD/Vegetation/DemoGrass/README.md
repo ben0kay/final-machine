@@ -1,6 +1,6 @@
-# Terrain3D demo grass trial
+# Terrain3D demo grass trial (disabled in test world)
 
-The test world now renders the **actual installed Terrain3D 1.0.2 demo GPU-particle grass**: `demo/Demo.tscn` → `addons/terrain_3d/extras/particle_example/Terrain3DParticles.tscn`. This uses 10-triangle RibbonTrailMesh blades and GPU terrain-map grounding, not the demo's separate TextureCard example or ForestGrass001 alpha cards.
+The test world **previously rendered** the actual installed Terrain3D 1.0.2 demo GPU-particle grass: `demo/Demo.tscn` → `addons/terrain_3d/extras/particle_example/Terrain3DParticles.tscn`. This uses 10-triangle RibbonTrailMesh blades and GPU terrain-map grounding, not the demo's separate TextureCard example or ForestGrass001 alpha cards.
 
 ## Ownership and styling
 
@@ -16,9 +16,9 @@ Defaults: 5×5 camera-following emitters, each with 76×76 slots: **144,400 pote
 
 The inherited GPU process runs at 30Hz. The CPU checks camera position each physics tick and recycles the bounded grid after roughly 1m movement; static terrain-map bindings upload only once. No per-blade nodes, CPU per-blade frame updates, shadows or collisions. Restart after preset/terrain rebinding changes; live terrain edits are outside this trial. The adapter corrects the example's reversed vertical AABB, and the local process shader handles missing finite-map layers safely.
 
-`Grass.RenderGrass=false` skips legacy grass mesh/material loading and all MultiMesh draws. Its original one-shot placement still supplies counts/anchors to the unchanged FernScatter; its temporary setup work remains. The fern ratio refers to retained legacy metadata, not individual GPU blades.
+`DemoGrassMaster.Enabled=false` now prevents the demo particle emitters from being created; `Grass.RenderGrass=true` restores ForestGrass001 MultiMesh visuals. The demo scene/configuration and its shader assets are preserved for comparison, and the fern placement remains based on the ForestGrass001 scatter metadata.
 
-**Restore the old appearance:** set Grass.RenderGrass=true in WORLD/Scenes/test.tscn, set DemoGrassMaster.Enabled=false, and restart. Original GrassMaster settings/materials/models remain intact. Trees, saved terrain, environment, controls and HUD are unchanged.
+**Switch back to the Terrain3D demo:** set `Grass.RenderGrass=false` in `WORLD/Scenes/test.tscn` and `DemoGrassMaster.Enabled=true` in `WORLD/Vegetation/Configuration/DemoGrassMaster.tres`, then restart. The demo and original grass assets remain intact; trees, saved terrain, environment, controls and HUD are unchanged.
 
 ## Validation
 
