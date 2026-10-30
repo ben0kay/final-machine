@@ -35,3 +35,20 @@ The scene includes one reusable `SmallBuilding.tscn` instance at approximate X=7
 ## ForestGrass002 floor-filler layer (2026-10-30)
 
 The `GrassFiller` sibling node adds the existing ForestGrass002 crossed-card tufts between ForestGrass001 patches using a one-shot Terrain3D-grounded jittered grid. Enabled and tuned in `WORLD/Vegetation/Configuration/ForestGrass002FillerMaster.tres`. It leaves ForestGrass001, ferns, pine placements, demo-particle disablement, structures and HUD intact. In-engine coverage, lighting and FPS still require local inspection.
+
+
+## Test 2 — isolated Terrain3D editor sculpting lab
+
+Open **`WORLD/Scenes/test2.tscn` in the Godot 3D editor** (not Play). The `Terrain` node loads a **separate copy** of the current enhanced 16-region landscape from `WORLD/Scenes/Test2/Regions/`, and uses its own `Test2/TerrainAssets_Test2.tres` list. Sculpting, painting or adding mesh assets here **does not edit** `WORLD/Terrain/Landscape/RegionsEnhancedV1/` or the active `test.tscn`.
+
+**Try the brushes:**
+1. Open `test2.tscn`, select the **Terrain** node in the Scene dock and look for Terrain3D's **bottom-panel toolbar/asset dock**. If missing, confirm the Terrain3D editor plugin is enabled and restart Godot.
+2. Choose the **Sculpt** tools: raise/lower, flatten, smooth, slope, etc.; set brush size/strength, then left-click and drag over terrain in the **3D editor viewport**. `Ctrl` modifies/inverts certain brush actions, depending on the selected tool; refer to the plugin's built-in help.
+3. Switch to **Textures** to paint Meadow, Woodland or Rock using the included terrain texture assets. Edited heights/paint are saved into **Test2/Regions**, separately from the active world.
+4. To try **foliage painting**, open Terrain3D's **Meshes** tab in its asset dock, press **+** to register a `Terrain3DMeshAsset`, choose a source `scene_file`/mesh, then select the new mesh and the instancer/foliage paint tool. Adjust brush size, density, random scale and rotation.
+5. **PineTree002 is NOT automatically a terrain paint asset.** The existing pines in `test.tscn` are spawned by `PineForest.cs` with custom three-LOD MultiMeshes. Terrain3D's built-in instancer uses its own registered mesh list/LOD setup, and does **not** automatically inherit that C# LOD/collision/shader arrangement. Importing the whole multi-mesh pine glTF/prefab may select only one mesh surface and lose bark or needles. A proper editor-paintable **combined visual mesh / LOD scene** needs a separate focused authoring pass; do not assume the existing `PineTree002.tscn` is drop-in. You can experiment first with a one-mesh grass/rock asset in this isolated lab.
+6. There is deliberately **no procedural tree/grass scatter and no player startup script** in Test 2: it's for learning the *editor*, not running the survival prototype. Use the 3D editor camera to fly around the scene. To play the normal forest game, use `test.tscn`.
+
+**Safety:** The initial Test 2 region files were copied byte-identically from the enhanced baseline; any subsequent edits belong to the Test 2 directory. Avoid replacing the active landscape's data path with Test 2 while experimenting. Godot's terrain editor may save region data as you paint, so check your Git diff before committing experiments. The scene uses the same image textures (read-only references), but a separate editable `Terrain3DAssets` resource.
+
+**Validation:** No Godot editor/GPU test was run here; in Godot check that both `test2.tscn` and `test.tscn` open correctly, Terrain3D sculpt/texture brushes appear, and editing Test 2 only changes the Test 2 region files.

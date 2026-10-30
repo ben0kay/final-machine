@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://WORLD/Terrain/Integration/Terrain3D/surface.gd" id="1"]
+[ext_resource type="Terrain3DAssets" path="res://WORLD/Scenes/Test2/TerrainAssets_Test2.tres" id="2"]
+[ext_resource type="PackedScene" path="res://WORLD/Environment/environment.tscn" id="3"]
+
+[sub_resource type="Terrain3DMaterial" id="TerrainMaterial"]
+
+[node name="Test2SculptLab" type="Node3D"]
+
+[node name="Terrain" type="Terrain3D" parent="."]
+script = ExtResource("1")
+region_size = 256
+data_directory = "res://WORLD/Scenes/Test2/Regions"
+assets = ExtResource("2")
+material = SubResource("TerrainMaterial")
+collision_mode = 3
+
+[node name="Environment" parent="." instance=ExtResource("3")]
