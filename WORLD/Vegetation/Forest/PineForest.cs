@@ -15,6 +15,8 @@ public partial class PineForest : Node3D
         Settings ??= new ForestSettings();
         var surface = GetNode(SurfacePath);
         var random = new RandomNumberGenerator { Seed = (ulong)Settings.Seed };
+        var thinning = new RandomNumberGenerator { Seed = (ulong)(Settings.Seed + 91007) };
+        var keptPositions = new List<Vector3>();
         var batches = new Dictionary<Vector2I, List<Transform3D>>();
         for (int i = 0; i < Settings.Attempts; i++)
         {
@@ -30,11 +32,16 @@ public partial class PineForest : Node3D
             for (int dx = -1; dx <= 1; dx++)
                 if (_occupied.TryGetValue(cell + new Vector2I(dx, dz), out var other) && new Vector2(x - other.X, z - other.Z).LengthSquared() < Settings.MinimumSpacing * Settings.MinimumSpacing) blocked = true;
             if (blocked) continue;
+            // Reserve every original location for spacing, but keep only a configurable fraction.
+            // The placement RNG still draws scale/rotation for every accepted tree, preserving the
+            // original positions and transforms of trees that survive the thinning pass.
             _occupied[cell] = position;
-            var batch = new Vector2I(Mathf.FloorToInt(x / Settings.BatchSize), Mathf.FloorToInt(z / Settings.BatchSize));
-            if (!batches.TryGetValue(batch, out var transforms)) batches[batch] = transforms = new();
             float scale = random.RandfRange(0.88f, 1.12f);
             var basis = new Basis(Vector3.Up, random.RandfRange(0, Mathf.Tau)).Scaled(Vector3.One * scale);
+            if (thinning.Randf() > Mathf.Clamp(Settings.TreeKeepFraction, 0f, 1f)) continue;
+            keptPositions.Add(position);
+            var batch = new Vector2I(Mathf.FloorToInt(x / Settings.BatchSize), Mathf.FloorToInt(z / Settings.BatchSize));
+            if (!batches.TryGetValue(batch, out var transforms)) batches[batch] = transforms = new();
             transforms.Add(new Transform3D(basis, position - new Vector3(batch.X * Settings.BatchSize, 0, batch.Y * Settings.BatchSize)));
         }
         for (int lod = 0; lod < 3; lod++)
@@ -48,9 +55,9 @@ public partial class PineForest : Node3D
         var body = new StaticBody3D { CollisionLayer = 1, CollisionMask = 0 };
         AddChild(body);
         var trunk = new CapsuleShape3D { Radius = 0.32f, Height = 16f };
-        foreach (var position in _occupied.Values)
+        foreach (var position in keptPositions)
             body.AddChild(new CollisionShape3D { Shape = trunk, Position = position + Vector3.Up * 8 });
-        GD.Print($"FM0: {_occupied.Count} pines in {batches.Count} spatial batches; no per-tree processing.");
+        GD.Print($"FM0: {keptPositions.Count} pines in {batches.Count} spatial batches; no per-tree processing.");
         _occupied.Clear();
     }
     // =========================================================

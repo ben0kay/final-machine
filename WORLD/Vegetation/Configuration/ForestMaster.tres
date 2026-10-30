@@ -2,3 +2,4 @@
 [ext_resource type="Script" path="res://WORLD/Vegetation/Forest/ForestSettings.cs" id="1"]
 [resource]
 script = ExtResource("1")
+TreeKeepFraction = 0.85
