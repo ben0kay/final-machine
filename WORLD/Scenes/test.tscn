@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=14 format=3]
 [ext_resource type="Script" path="res://WORLD/Scenes/TestWorld.cs" id="1"]
 [ext_resource type="PackedScene" path="res://WORLD/Terrain/Integration/Terrain3D/terrain.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://PLAYER/player.tscn" id="3"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://DEBUG/Overlay/environment_debug_overlay.tscn" id="9"]
 [ext_resource type="Script" path="res://WORLD/Vegetation/Grass/GrassScatter.cs" id="10"]
 [ext_resource type="Resource" path="res://WORLD/Vegetation/Configuration/GrassMaster.tres" id="11"]
+[ext_resource type="Script" path="res://WORLD/Vegetation/Ferns/FernScatter.cs" id="12"]
+[ext_resource type="Resource" path="res://WORLD/Vegetation/Configuration/FernMaster.tres" id="13"]
 [node name="TestWorld" type="Node3D"]
 script = ExtResource("1")
 [node name="Terrain" parent="." instance=ExtResource("2")]
@@ -22,6 +24,12 @@ SurfacePath = NodePath("../Terrain")
 script = ExtResource("10")
 Settings = ExtResource("11")
 SurfacePath = NodePath("../Terrain")
+ForestPath = NodePath("../Forest")
+[node name="Ferns" type="Node3D" parent="."]
+script = ExtResource("12")
+Settings = ExtResource("13")
+SurfacePath = NodePath("../Terrain")
+GrassPath = NodePath("../Grass")
 ForestPath = NodePath("../Forest")
 [node name="Player" parent="." instance=ExtResource("3")]
 position = Vector3(0, 200, 20)

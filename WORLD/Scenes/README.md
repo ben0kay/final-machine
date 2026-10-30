@@ -18,3 +18,7 @@ The existing environment has an event-driven EnvironmentController child, with a
 ## Always-visible rendering counters
 
 `HUD/FPS` remains an independent top-left label visible while the F1 environment panel is closed or open. Its existing 0.5-second timer now displays `FPS | rendered primitives` using `Godot.Performance.Monitor.RenderTotalPrimitivesInFrame`. This is a built-in render-workload estimate, **not an exact count of unique visible mesh triangles**: it may count repeated depth/shadow passes or indices/vertices and varies with culling. Small non-interactive text; no extra per-frame processing or extra debug scene. If `Performance` counters are unavailable in some release configurations, check editor Monitors instead. Runtime Godot visual confirmation is left to the owner.
+
+## Forest-floor vegetation tuning
+
+The test scene also owns `Grass` and `Ferns` nodes. Grass builds after the pines and signals the ferns to populate a subset of actual grass patches. The default target is 6:1 grass:fern by instance count (not measured coverage area). Tune `WORLD/Vegetation/Configuration/GrassMaster.tres` and `FernMaster.tres` independently. Godot compilation, shader rendering and FPS acceptance are still pending for this change.

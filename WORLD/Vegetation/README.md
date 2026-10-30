@@ -7,9 +7,10 @@ The original PineTree002.tscn is preserved: its Terra Machine LOD/static-collisi
 
 Cost: one initialization scatter and MultiMesh build, then no forest process callbacks. Rendering, alpha overdraw, spatial batch count and static collision proxies still have costs. This is a finite benchmark, not streaming. Tune attempts/spacing/batch size and distances together after measuring uncapped FPS; no measured FPS improvement is claimed.
 
-## ForestGrass001 patches
-Grass/GrassScatter.cs retains one-shot spatial MultiMeshes, the latest committed A/B/C meshes/textures and their wind material. Configuration/GrassMaster.tres tunes fewer, larger irregular growth areas, overlapping cores, isolated tufts, moderate blade height, subtle tint and 26/72m LOD/culling. Terrain-aware queries now reject native painted rock/holes, preserve bare zones near kept tree trunks, thin the dry streambed centre and enrich suitable banks. See [grass ownership/tuning](Grass/README.md) and [terrain baseline/bake workflow](../Terrain/README.md).
+## Forest floor: grass + ferns
 
-PineTree002 assets, ForestMaster seed/density/thinning, placement logic and three LOD ranges are unchanged. Both scatterers re-ground on saved terrain at launch; reshaped steep/high ground naturally changes pine acceptance. No per-frame vegetation update, shadow-policy change, fog/lighting change or new species was added.
+`Grass/GrassScatter.cs` now places larger, more connected ForestGrass001 patches with three authored mesh variants and weighted height variation. Its `GrassMaster.tres` settings still respect saved terrain height, slopes, rock paint, holes, channels and kept pine trunks.
 
-Focused validation passed: .NET build, native saved terrain/collision/habitat checks and headless scene startup (5,927 pines; 21,121 grass tufts across 640 grass cells for this terrain/configuration). These are instance counts, not FPS measurements. Local rendered appearance and GPU acceptance remain pending.
+`Ferns/FernScatter.cs` adds Ferns001 into a subset of actual grass growth patches. It targets **one fern per six grass tufts**, where terrain and instance budgets permit. Ferns are larger, varied, mostly use lightweight source meshes and fade/cull closer than grass. Its own `FernMaster.tres` controls placement and rendering; see [grass tuning](Grass/README.md) and [fern tuning](Ferns/README.md).
+
+Both use shared MultiMesh batches and shader wind without CPU per-frame work, collisions or shadows. Increased grass size/population and fern cards may increase alpha overdraw, initialization time and GPU cost. Local build/visual/FPS acceptance is pending; old benchmark 21,121 grass tufts / 5,927 pines is historical, not a new measurement. Pine trees, terrain data, fog and environment are unchanged.

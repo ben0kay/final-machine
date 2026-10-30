@@ -1,22 +1,15 @@
-# ForestGrass001 patch scatter
+# ForestGrass001 patch scatter — fuller woodland coverage
 
-`GrassScatter.cs` still scatters once on the saved Terrain3D surface into the existing spatial MultiMeshes. `Configuration/GrassMaster.tres` / `GrassSettings.cs` own tuning. The current committed A/B/C models, buffers, textures, imports, wind shader and shared material are preserved; no grass art was regenerated or recoloured.
+`GrassScatter.cs` scatters once onto the saved Terrain3D landscape using spatial MultiMeshes. `WORLD/Vegetation/Configuration/GrassMaster.tres` owns its settings. Authored A/B/C mesh, atlas, winding fixes, imports and existing wind material are preserved without source modifications.
 
-## Natural growth areas
+**Coverage pass:** 22,000 placement attempts at 0.82 density; minimum patch-centre spacing 6m; radius 3.4–8m; 24–68 target tufts per patch; 6% isolated patches and 0.52m within-patch tuft spacing. Unequal overlapping growth cores and local noise retain negative space and irregular patch edges. Patch radii can overlap naturally.
 
-- Fewer candidate centres (18,000 attempts, previously 22,000), at least 7m apart instead of 5m. Broad noise/woodland masks retain bare woodland and the central clearing.
-- Main growth areas use variable 2.3–5.4m radius, rotated/stretched overlapping cores, local noise gaps, variable density and up to 18–52 target tufts depending on size/fullness. These are irregular growth areas, not uniformly filled circles. About 14% of accepted centres request only 1–3 isolated tufts.
-- Local tuft spacing (0.65m) limits tight overlap; some attempts fail because of rock, terrain, trunks or noise. A 40,000-tuft hard budget prevents accidental excessive growth during tuning; it is not a density target. The focused startup produced **21,121 tufts at 1,046 accepted centres across 640 cells**. Counts depend on saved terrain and settings; a centre can have fewer/no tufts after rejection.
-- Source height remains unchanged. Runtime scales 0.48–0.72 give roughly 0.33–0.65m grass across source variants/LODs. Independent width multipliers 1.1–1.45 add fullness without tall blades. Random yaw, modest partial normal alignment and the existing subtle patch/instance tints break repetition.
-- Native `surface.gd` `grass_sample` checks saved height, normal, hole and rock-paint blend. Steep or unsuitable ground is rejected. The baked channel profile suppresses centre growth to about 6% probability, and slightly enriches suitable banks. Later hand-sculpted channel rerouting requires updating habitat metadata separately; arbitrary brush edits are not inferred as rivers.
-- `ForestPath` explicitly references the existing pine owner. After its deferred build, grass caches kept trunk proxy positions in small buckets, uses a 1.1m soil clearance, then frees that temporary cache. There are no per-tuft rays or forest updates. Keep the forest ahead of grass in scene/deferred initialization order if reusing this owner.
+**Height and colour:** scale 0.72–1.20 (previously 0.48–0.72), with short/medium/tall weighted sizes (22% / 62% / 16%). Relative width multipliers 0.94–1.15 counteract the larger absolute scale, so nearby tufts are fuller but not all overly wide. Random yaw, partial normal alignment and subtle existing local/patch green tints remain.
 
-Patch-centre spatial buckets now retain **all** accepted points in each cell so spacing cannot lose an earlier centre; see root `LESSONS_LEARNED.md` VEG-002.
+The global MaximumTufts cap is now 45,000 as a safety bound, NOT a target. Visual **30–45% coverage is unmeasured** and must be judged in-engine. More size/density increases alpha overdraw and startup terrain queries; an acceptable uncapped FPS is not demonstrated by triangle counts or fog.
 
-## Rendering / cost
+Native `grass_sample` continues checking saved height, normals, holes, rock paint and stream habitat. Tufts avoid kept pine trunks. The central clearing and rocky ground remain mostly free. After the one-shot build, populated patch centres and placed tuft count are exposed, and a completion event triggers the separate fern owner; no grass instance nodes or CPU frame processing are created.
 
-Unchanged: three source variants, LOD1 0–26m / LOD2 26–72m, shared material fade 44–68m, 32m batching, no grass shadows/collision or per-frame CPU callbacks. Wind remains GPU-side. Source geometry is 54–66 near / 24–30 far triangles per tuft. Low triangles do not remove alpha overdraw/batch/shader costs. The added suitability/trunk checks cost initialization only; no measured GPU/performance improvement is claimed.
+Rendering remains A/B/C two-tier MultiMesh: LOD1 0–26m, LOD2 26–72m, material fades 44–68m, no grass collisions or shadows. Grass source triangles: 54–66 near and 24–30 far.
 
-## Validation
-
-Passed .NET build and a headless scene startup: source models/material load and both scatter owners finish without script errors. Native checks cover saved terrain/collision, cliff rock coverage and sparse channel-centre habitat. In Godot locally inspect patch silhouettes, spacing, colour under your lighting/fog, blade height and bank/trunk contact, existing LOD/fade transitions and uncapped FPS. Visual realism and no substantial FPS regression remain owner acceptance checks, not headless-verified results.
+Godot build/rendering/FPS validation is pending. Check visible growth shapes and clearing/rock exclusions, mix of short and tall foliage, all three LODs/lighting directions, wind, fade and uncapped FPS against the prior 21,121-grass-tuft benchmark. If needed reduce PatchDensity/MaximumTufts before increasing draw distance.
