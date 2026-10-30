@@ -10,6 +10,7 @@ shader_parameter/wind_speed = 1.1
 shader_parameter/wind_direction = Vector2(0.82, 0.57)
 shader_parameter/foliage_backlight_strength = 0.14
 shader_parameter/foliage_tint = Color(0.98, 1, 0.96, 1)
+shader_parameter/palette_response = 0.85
 shader_parameter/distance_fade_enabled = true
 shader_parameter/sparse_distance = 44.0
 shader_parameter/end_distance = 68.0

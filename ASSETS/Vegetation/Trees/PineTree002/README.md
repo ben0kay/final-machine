@@ -26,3 +26,15 @@ Godot/.NET are unavailable here. Pull, let Godot reimport, restart test.tscn, th
 
 ## Final Machine FM0 integration
 The original prefab above retains historical Terra Machine dependencies and is not instantiated by FM0. WORLD/Vegetation/Forest/PineForest.cs loads all three existing source models into spatial GPU MultiMeshes with shared transforms and native ranges 70/280/600m. Source art/prefab are unchanged. See WORLD/Vegetation/README.md for collisions, shadows and pending local visual validation.
+
+## Runtime pine-needle ShaderMaterial for all 3 LODs (FM0)
+
+`WORLD/Vegetation/Forest/PineForest.cs` now duplicates the imported two-surface ArrayMesh **once per LOD** before building GPU MultiMesh batches. Only surface **1** (needle foliage) receives `Materials/PineNeedles.gdshader`; surface **0** keeps imported PBR bark. The original PineTree002.tscn prefab, source GLTF/BIN, geometry, UVs, placement, collisions, shadow policy and LOD distances are unchanged. This conversion affects the FM0 forest renderer, not direct previews of the original glTF/prefab.
+
+The same shader is shared by:
+- `Materials/PineNeedlesNear.tres` for LOD1/LOD2: existing `pine_needles_distance_full_2k.png`, alpha-scissor cutoff 0.29, roughness 0.90
+- `Materials/PineNeedlesLod3.tres` for LOD3: existing `pine_needles_lod3_macro_1k.png`, alpha-scissor cutoff 0.35, roughness 0.94
+
+The foliage shader reads project-wide `forest_tint` and `forest_tint_strength`. It keeps texture/detail luminance instead of replacing albedo with a flat colour. The F1 forest foliage colour picker and strength slider simultaneously tune pine needles, ForestGrass001 and ForestGrass002. The pine material's `palette_response=0.85` can be adjusted independently. Strength 0 removes the shared hue influence. No pine wind is added in this first pass.
+
+The pine shader is intended to match the previously imported double-sided cutout/PBR look, but shader and built-in StandardMaterial3D lighting are not guaranteed pixel-identical. Verify texture/alpha silhouette and sun-front/back lighting at all three LODs, shadows (LOD1/2), no bark tint and uncapped GPU cost in Godot. No engine build/render acceptance was performed in this change.

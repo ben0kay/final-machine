@@ -44,10 +44,16 @@ public partial class PineForest : Node3D
             if (!batches.TryGetValue(batch, out var transforms)) batches[batch] = transforms = new();
             transforms.Add(new Transform3D(basis, position - new Vector3(batch.X * Settings.BatchSize, 0, batch.Y * Settings.BatchSize)));
         }
+        // One shared ShaderMaterial per atlas; imported bark remains on surface 0.
+        var needlesNear = GD.Load<ShaderMaterial>(
+            "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesNear.tres");
+        var needlesLod3 = GD.Load<ShaderMaterial>(
+            "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesLod3.tres");
         for (int lod = 0; lod < 3; lod++)
         {
             string path = $"res://ASSETS/Vegetation/Trees/PineTree002/Models/pine_tree_002_a_LOD{lod + 1}.gltf";
             var source = GD.Load<PackedScene>(path).Instantiate<Node3D>();
+            PrepareNeedleMaterial(source, lod == 2 ? needlesLod3 : needlesNear);
             foreach (var batch in batches) AddMeshes(source, Transform3D.Identity, batch.Key, batch.Value, lod);
             source.Free();
         }
@@ -61,7 +67,27 @@ public partial class PineForest : Node3D
         _occupied.Clear();
     }
     // =========================================================
-    // Each batch/LOD shares meshes and imported materials; all tiers use identical bounds centers.
+    // Duplicate each source mesh once per LOD, not once per tree or batch.
+    // Only the needle surface changes; never alter the imported bark or source glTF resource.
+    private void PrepareNeedleMaterial(Node3D node, ShaderMaterial needles)
+    {
+        if (node is MeshInstance3D visual)
+        {
+            if (needles == null) GD.PushWarning("PineForest: needle shader missing; using original imported material.");
+            else if (visual.Mesh is ArrayMesh imported && imported.GetSurfaceCount() >= 2)
+            {
+                var prepared = (ArrayMesh)imported.Duplicate(false);
+                prepared.SurfaceSetMaterial(1, needles);
+                visual.Mesh = prepared;
+            }
+            else GD.PushWarning("PineForest: expected two-surface ArrayMesh; keeping the imported material.");
+        }
+        foreach (var child in node.GetChildren())
+            if (child is Node3D child3D) PrepareNeedleMaterial(child3D, needles);
+    }
+
+    // =========================================================
+    // Each batch/LOD shares prepared meshes and unchanged native visibility/collision settings.
     private void AddMeshes(Node3D node, Transform3D parent, Vector2I cell, List<Transform3D> transforms, int lod)
     {
         Transform3D local = parent * node.Transform;

@@ -1,6 +1,10 @@
 // Geometric grass ribbons: true blade silhouettes, opaque rendering and lightweight GPU wind.
 shader_type spatial;
 render_mode cull_disabled;
+
+// Shared, project-wide palette; the local grass material still controls its own tint.
+global uniform vec4 forest_tint;
+global uniform float forest_tint_strength;
 uniform sampler2D grass_atlas : source_color, filter_linear_mipmap_anisotropic;
 // Kept for compatibility with existing ForestGrass001 material parameter sets.
 uniform float alpha_cutoff : hint_range(0.05,0.95) = 0.39;
@@ -12,6 +16,7 @@ uniform float sparse_distance = 44.0;
 uniform float end_distance = 68.0;
 uniform float foliage_backlight_strength : hint_range(0.0,0.35) = 0.12;
 uniform vec3 foliage_tint : source_color = vec3(1.0);
+uniform float palette_response : hint_range(0.0,1.0) = 0.85;
 varying flat float distance_presence;
 void vertex() {
     vec3 root_world = (MODEL_MATRIX * vec4(0.0,0.0,0.0,1.0)).xyz;
@@ -27,7 +32,12 @@ void vertex() {
 void fragment() {
     // Opaque narrow ribbons: no alpha-scissor overdraw from broad texture cards.
     vec3 texel = texture(grass_atlas, UV).rgb;
-    ALBEDO = texel * COLOR.rgb * foliage_tint;
+    vec3 original = texel * COLOR.rgb * foliage_tint;
+    vec3 weights = vec3(0.2126, 0.7152, 0.0722);
+    float original_luma = dot(original, weights);
+    float palette_luma = max(dot(forest_tint.rgb, weights), 0.05);
+    vec3 matched = clamp(forest_tint.rgb * (original_luma / palette_luma), vec3(0.0), vec3(1.0));
+    ALBEDO = mix(original, matched, clamp(forest_tint_strength * palette_response, 0.0, 1.0));
     ROUGHNESS = 0.93;
     SPECULAR = 0.25;
     METALLIC = 0.0;

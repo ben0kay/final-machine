@@ -9,6 +9,9 @@ public partial class EnvironmentDebugOverlay : Control
     private PanelContainer _panel;
     private bool _restoreCapture;
     private HSlider _clear, _full;
+    private static readonly Color DefaultForestTint = new Color(0.43f, 0.55f, 0.37f, 1f);
+    private Color _forestTint = DefaultForestTint;
+    private float _forestTintStrength = 0.25f;
     // =========================================================
     // The FPS label remains a separate HUD sibling, visible with this panel closed.
     public void Initialize(EnvironmentController environment, PlayerController player)
@@ -49,11 +52,35 @@ public partial class EnvironmentDebugOverlay : Control
         AddSlider(light, "Day length (real minutes)", 15, 240, 5, settings.MinutesPerDay, value => { settings.MinutesPerDay = value; environment.Apply(); });
         AddSlider(light, "Sunlight energy", 0, 4, 0.05, settings.SunEnergy, value => { settings.SunEnergy = value; environment.Apply(); }, "0.00");
         AddSlider(light, "Shadow distance (m)", 10, 300, 1, settings.ShadowDistance, value => { settings.ShadowDistance = value; environment.Apply(); });
+        var foliage = AddSection(content, "Forest foliage / pine + grass");
+        foliage.AddChild(new Label { Text = "Shared tint: pine needles + grass 001/002, not bark." });
+        var forestColor = new ColorPickerButton { Text = "Forest foliage colour", Color = _forestTint, EditAlpha = false };
+        forestColor.ColorChanged += value =>
+        {
+            _forestTint = value;
+            RenderingServer.GlobalShaderParameterSet("forest_tint", value);
+        };
+        foliage.AddChild(forestColor);
+        var forestStrength = AddSlider(foliage, "Global tint strength (0 = original)", 0, 1, 0.05,
+            _forestTintStrength, value =>
+            {
+                _forestTintStrength = value;
+                RenderingServer.GlobalShaderParameterSet("forest_tint_strength", value);
+            }, "0.00");
+        var originalColours = new Button { Text = "Compare original foliage colours" };
+        originalColours.Pressed += () => {
+            forestStrength.Value = 0;
+            _forestTintStrength = 0f;
+            RenderingServer.GlobalShaderParameterSet("forest_tint_strength", 0f);
+        };
+        foliage.AddChild(originalColours);
         var copy = new Button { Text = "Copy Settings" };
         copy.Pressed += () => DisplayServer.ClipboardSet(JsonSerializer.Serialize(new {
             settings.FogEnabled, settings.ClearDistance, settings.FullDistance, settings.AtmosphericDensity,
             FogColor = new[] { settings.FogColor.R, settings.FogColor.G, settings.FogColor.B, 1f },
-            settings.Hour, settings.MinutesPerDay, settings.SunEnergy, settings.ShadowDistance
+            settings.Hour, settings.MinutesPerDay, settings.SunEnergy, settings.ShadowDistance,
+            ForestTint = new[] { _forestTint.R, _forestTint.G, _forestTint.B, _forestTint.A },
+            ForestTintStrength = _forestTintStrength
         }, new JsonSerializerOptions { WriteIndented = true }));
         content.AddChild(copy);
     }

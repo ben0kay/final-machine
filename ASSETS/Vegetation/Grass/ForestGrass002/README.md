@@ -43,3 +43,7 @@ The `.gltf` files are editable in Blender using File → Import → glTF 2.0. A 
 ## Main-world use (2026-10-30)
 
 Now used additively by `WORLD/Vegetation/Grass/ForestGrass002Filler.cs`, as `GrassFiller` in the test scene. The original six models, alpha atlas, shader and standalone preview remain unchanged. Whole-tuft world rotation/scale is randomized at scatter time; the individual card yaw/tilt/offsets remain authored in each glTF. Independent density/render settings live in `WORLD/Vegetation/Configuration/ForestGrass002FillerMaster.tres`.
+
+## Shared pine + grass colour experiment
+
+This material's shader now reads `forest_tint` and `forest_tint_strength` (project Shader Globals), also used by PineTree002 needle foliage and ForestGrass001. The active ForestGrass002 filler material retains its atlas, alpha-to-coverage policy, wind/fade, local `foliage_tint`, and `palette_response=0.85`. Source mesh variants, placements, LODs and collision/shadow policy are unchanged. F1 controls are runtime-only; set global strength to 0 to compare original colours. Shader visuals and FPS require Godot verification.
