@@ -5,7 +5,7 @@
 [node name="Terrain" type="Terrain3D"]
 script = ExtResource("1")
 region_size = 256
-data_directory = "res://WORLD/Terrain/Landscape/Regions"
+data_directory = "res://WORLD/Terrain/Landscape/RegionsEnhancedV1"
 assets = ExtResource("2")
 material = SubResource("Material")
 collision_mode = 3

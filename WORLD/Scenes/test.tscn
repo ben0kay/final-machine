@@ -22,6 +22,7 @@ SurfacePath = NodePath("../Terrain")
 script = ExtResource("10")
 Settings = ExtResource("11")
 SurfacePath = NodePath("../Terrain")
+ForestPath = NodePath("../Forest")
 [node name="Player" parent="." instance=ExtResource("3")]
 position = Vector3(0, 200, 20)
 [node name="HUD" type="CanvasLayer" parent="."]

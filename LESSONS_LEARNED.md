@@ -26,6 +26,17 @@
 - **Fix / prevention:** Inspect exported winding, face direction, vertex normals and mirrored transforms **for every variant and LOD**. Correct genuinely inconsistent export data rather than hiding the issue with brighter/darker textures, emission, forced two-sided shading or repeated shader normal flips. Preserve intentional foliage-normal art direction where valid.
 - **Verification:** Check glTF normal-versus-face alignment, then inspect the imported asset in **Godot** with the sun in front, behind and to both sides, and at different elevations. Compare near/far LODs. **In-engine verification remains necessary for any newly authored asset; do not assume this historical finding proves current runtime acceptance.**
 
+### VEG-002 — A spacing bucket must retain all accepted centres
+
+**Area:** Vegetation / deterministic patch placement
+**Affected:** `WORLD/Vegetation/Grass/GrassScatter.cs`
+**Status:** Confirmed by source inspection; build and scene initialization verified
+
+- **Symptom:** The configured minimum patch spacing was not guaranteed, allowing unintended tight overlapping growth areas.
+- **Cause:** A spatial cell stored only one centre. Two points near opposite corners of a cell can be farther apart than the spacing and both be accepted; assigning the second overwrote the first. Later candidates could then miss that first neighbour.
+- **Fix / prevention:** Store a list of all accepted centres per spatial cell and test every neighbour in the bounded adjacent cells. Do not assume a cell whose side equals the spacing can hold only one accepted point.
+- **Verification:** Reviewed the corner-case geometry and new bucket/list traversal; .NET build and headless scatter initialization passed. Patch appearance/overdraw still needs local Godot review.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title

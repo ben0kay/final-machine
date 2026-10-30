@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Explicit native terrain authoring output; keep the recoverable original Regions alongside it.
+!WORLD/Terrain/Landscape/RegionsEnhancedV1/terrain3d*.res

@@ -7,7 +7,7 @@ func _initialize() -> void:
 func bake() -> void:
     for file in DirAccess.get_files_at(DIRECTORY):
         if file.ends_with(".res"):
-            push_error("Saved terrain exists. Bake cancelled to protect authored edits. Use a separate output directory for a new landscape.")
+            push_error("Saved terrain exists. Initial bake cancelled. For the additive pass use enhance_landscape.gd with explicit --source and empty --output directories.")
             quit(1)
             return
     var terrain := Terrain3D.new()

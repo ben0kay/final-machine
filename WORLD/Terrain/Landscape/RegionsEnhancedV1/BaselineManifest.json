@@ -1,0 +1,23 @@
+{
+  "configuration": "LandscapeBake.cfg",
+  "operation": "additive forest-floor enhancement v1",
+  "source": "res://WORLD/Terrain/Landscape/Regions",
+  "source_sha256": {
+    "terrain3d-01-01.res": "f9f9c03757ab32132b050e0b0bca7f39cbbbb0977f80a71d9fd16d4404f9b55d",
+    "terrain3d-01-02.res": "63cb8a715f35aadd338de8db7ae92fe38303ea125058f41e4d5d4c35b4f5aa6e",
+    "terrain3d-01_00.res": "2f22f4ca5d3cc52ca428acb3ca81b9d773f2d7872b2cc549701447286c34b6f6",
+    "terrain3d-01_01.res": "d66b9ae349e79551c27f4d6cde7a7134f3488a5f5eb45e09800ec9db94eea567",
+    "terrain3d-02-01.res": "cff1a029cf955141e2ce4f2c53ee1dd2c75d1ae4039ae5c4427d465494b8deae",
+    "terrain3d-02-02.res": "bb7d4c03f999604d649e9a74d67f86f506ef4731812cb6dfc5c456da5ccdd8ec",
+    "terrain3d-02_00.res": "3d9704a07693709684445b2b3aa8a255d04b4376132de83319f6758c40fcc6a6",
+    "terrain3d-02_01.res": "78e5871e1e55fd9502abe1b8f3941d1aead904c92d873faef7f32b0ef14b6b08",
+    "terrain3d_00-01.res": "1864fdcdd6c63fc330533523d93d43181a4cc648262bdd76bd765ef00024a2ec",
+    "terrain3d_00-02.res": "2ecddf1bd327db8120722813531eb262c4531464b79577c8719ad286e2b417a0",
+    "terrain3d_00_00.res": "6594a41712bbad32cf220b855afd4b3ca313704be9f28812e4ddce847a8eae85",
+    "terrain3d_00_01.res": "a7002f7f7c78e7c39e57ff81488be65f4cb5bfd7e0ff3219f402648d213d4e31",
+    "terrain3d_01-01.res": "fe595553c35c8602e1597e892b6b06373bb9ecebd0dc217f130fc6389b60af1d",
+    "terrain3d_01-02.res": "5984a14f671ce89fbca8111fad89f9438a6a1439994e65de3cf89c312034faca",
+    "terrain3d_01_00.res": "a4de3c97dc1d7831732c35c6df9bf323042991c1173cf92db14c952b7cf30004",
+    "terrain3d_01_01.res": "b11afcc8822ca23117929546f0bf364508a9d33d317ca6e9dd54cfc449957e71"
+  }
+}
