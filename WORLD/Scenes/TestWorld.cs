@@ -11,12 +11,22 @@ public partial class TestWorld : Node3D
         _player.SetPhysicsProcess(false);
         _fps = GetNode<Label>("HUD/FPS");
         var timer = new Timer { WaitTime = 0.5, Autostart = true };
-        timer.Timeout += () => _fps.Text = $"{Engine.GetFramesPerSecond()} FPS";
+        timer.Timeout += UpdateRenderStats;
+        UpdateRenderStats();
         AddChild(timer);
         var environment = GetNode<EnvironmentController>("Environment/EnvironmentController");
         environment.Initialize(GetNode<WorldEnvironment>("Environment"), _player.GetNode<Camera3D>("Camera3D"));
         GetNode<EnvironmentDebugOverlay>("DebugUIRoot/EnvironmentDebugOverlay").Initialize(environment, _player);
     }
+    // =========================================================
+    // Sample engine render counters twice a second; no per-frame debug processing.
+    // Godot's primitive monitor includes render passes and is not unique mesh triangles.
+    private void UpdateRenderStats()
+    {
+        long primitives = (long)Godot.Performance.GetMonitor(Godot.Performance.Monitor.RenderTotalPrimitivesInFrame);
+        _fps.Text = $"{Engine.GetFramesPerSecond()} FPS | {primitives:N0} prims";
+    }
+
     // =========================================================
     // A real collision ray honors later sculpting; stop polling after successful placement.
     public override void _PhysicsProcess(double delta)
