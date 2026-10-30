@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=10 format=3]
 [ext_resource type="Script" path="res://WORLD/Scenes/TestWorld.cs" id="1"]
 [ext_resource type="PackedScene" path="res://WORLD/Terrain/Integration/Terrain3D/terrain.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://PLAYER/player.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://WORLD/Environment/environment.tscn" id="4"]
 [ext_resource type="Script" path="res://WORLD/Vegetation/Forest/PineForest.cs" id="5"]
 [ext_resource type="Resource" path="res://WORLD/Vegetation/Configuration/ForestMaster.tres" id="6"]
+[ext_resource type="Script" path="res://WORLD/Environment/EnvironmentController.cs" id="7"]
+[ext_resource type="Resource" path="res://WORLD/Environment/Configuration/EnvironmentMaster.tres" id="8"]
+[ext_resource type="PackedScene" path="res://DEBUG/Overlay/environment_debug_overlay.tscn" id="9"]
 [node name="TestWorld" type="Node3D"]
 script = ExtResource("1")
 [node name="Terrain" parent="." instance=ExtResource("2")]
@@ -26,4 +29,11 @@ theme_override_constants/shadow_offset_y = 2
 [node name="Controls" type="Label" parent="HUD"]
 offset_left = 16.0
 offset_top = 40.0
-text = "Arrows: move | Shift: sprint | RMB: jump | Esc: cursor | Click: capture"
+text = "Arrows: move | Shift: sprint | RMB: jump | Esc: cursor | Click: capture | F1: environment"
+
+[node name="DebugUIRoot" type="CanvasLayer" parent="."]
+layer = 10
+[node name="EnvironmentDebugOverlay" parent="DebugUIRoot" instance=ExtResource("9")]
+[node name="EnvironmentController" type="Node" parent="Environment"]
+script = ExtResource("7")
+Defaults = ExtResource("8")

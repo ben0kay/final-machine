@@ -13,6 +13,9 @@ public partial class TestWorld : Node3D
         var timer = new Timer { WaitTime = 0.5, Autostart = true };
         timer.Timeout += () => _fps.Text = $"{Engine.GetFramesPerSecond()} FPS";
         AddChild(timer);
+        var environment = GetNode<EnvironmentController>("Environment/EnvironmentController");
+        environment.Initialize(GetNode<WorldEnvironment>("Environment"), _player.GetNode<Camera3D>("Camera3D"));
+        GetNode<EnvironmentDebugOverlay>("DebugUIRoot/EnvironmentDebugOverlay").Initialize(environment, _player);
     }
     // =========================================================
     // A real collision ray honors later sculpting; stop polling after successful placement.

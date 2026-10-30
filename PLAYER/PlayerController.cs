@@ -6,6 +6,10 @@ public partial class PlayerController : CharacterBody3D
     private Camera3D _camera;
     private float _pitch;
     private bool _jump;
+    private bool _debugInputBlocked;
+    // =========================================================
+    // Debug UI owns this gate, including clicks outside its panel.
+    public void SetDebugInputBlocked(bool blocked) { _debugInputBlocked = blocked; _jump = false; }
     public override void _Ready()
     {
         Settings ??= new PlayerSettings();
@@ -17,6 +21,7 @@ public partial class PlayerController : CharacterBody3D
     // Event-based view and jump input; Escape also clears pending jump intent.
     public override void _UnhandledInput(InputEvent e)
     {
+        if (_debugInputBlocked) return;
         if (e is InputEventKey key && key.Pressed && key.Keycode == Key.Escape)
         { Input.MouseMode = Input.MouseModeEnum.Visible; _jump = false; }
         if (e is InputEventMouseButton button && button.Pressed)
@@ -36,7 +41,7 @@ public partial class PlayerController : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         float dt = (float)delta;
-        bool captured = Input.MouseMode == Input.MouseModeEnum.Captured;
+        bool captured = !_debugInputBlocked && Input.MouseMode == Input.MouseModeEnum.Captured;
         Vector2 input = captured ? PlayerInput.Movement : Vector2.Zero;
         Vector3 target = GlobalBasis * new Vector3(input.X, 0, input.Y) * Settings.WalkSpeed * (captured && PlayerInput.Sprint ? Settings.SprintMultiplier : 1);
         Vector3 velocity = Velocity;

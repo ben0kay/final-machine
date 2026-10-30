@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnvironmentSettings" load_steps=2 format=3]
+[ext_resource type="Script" path="res://WORLD/Environment/Configuration/EnvironmentSettings.cs" id="1"]
+[resource]
+script = ExtResource("1")
+FogEnabled = true
+ClearDistance = 60.0
+FullDistance = 180.0
+FogColor = Color(0.57, 0.65, 0.72, 1)
+AtmosphericDensity = 0.008
+Hour = 13.5
+SunEnergy = 1.2
+ShadowDistance = 100.0

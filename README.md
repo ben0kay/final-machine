@@ -105,7 +105,7 @@ These are **design targets only**, not active tasks:
 | Phase | Goal | State |
 | --- | --- | --- |
 | **FM0** | Native 1024m landscape, textured ground, first-person player, three-LOD pine forest, static daylight and FPS | Implemented / local visual acceptance pending |
-| **FM1** | Beautiful forest/landscape visual benchmark, native terrain materials, foliage, atmosphere and FPS profiling | Planned |
+| **FM1** | Heavy forest distance fog and F1 environment debug overlay | Implemented / local visual acceptance pending |
 | **FM2** | Finite seeded geography with authored-point-of-interest pipeline; evaluate terrain regions and scale | Planned |
 | **FM3** | First quiet survival loop: forest walk, building shelter, sound perception, one wildlife/enemy prototype | Deferred |
 | **FM4** | Shallow trench/pit excavation proof with terrain/collision updates, then persistence | Deferred |
@@ -127,3 +127,6 @@ Read [CodePreferences.md](CodePreferences.md) before changes. Favor C#, modular 
 Run `WORLD/Scenes/test.tscn` with Godot 4.6+ **.NET** and .NET 8. Main scene is configured. See [scene validation/controls](WORLD/Scenes/README.md), [player](PLAYER/README.md), [terrain authoring and saved edits](WORLD/Terrain/README.md), [forest/LOD ownership](WORLD/Vegetation/README.md), and [static environment](WORLD/Environment/README.md).
 
 Committed terrain is native editable data, never regenerated on launch. Initial clearing looks north toward pine woodland, the broad mountain approach and escarpment. Controls: arrows / mouse / Shift sprint / RMB jump / Escape cursor / click recapture. No survival systems, grass meshes, buildings, wildlife or threats are included.
+
+## FM1 — fog and debug tuning
+F1 opens the scrollable environment panel; Escape or F1 closes it. Tune fog distances/colour/density, time, sunlight and shadow distance live; Copy Settings exports the current values. Defaults: clear 60m, full 180m, atmospheric density 0.008. Changes are runtime-only. See [environment](WORLD/Environment/README.md) and [debug overlay](DEBUG/Overlay/README.md) for ownership and pending visual checks.
