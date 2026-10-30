@@ -6,6 +6,7 @@ public partial class EnvironmentDebugOverlay : Control
 {
     private EnvironmentController _environment;
     private PlayerController _player;
+    private PineForest _forest;
     private PanelContainer _panel;
     private bool _restoreCapture;
     private HSlider _clear, _full;
@@ -13,10 +14,10 @@ public partial class EnvironmentDebugOverlay : Control
     private float _forestTintStrength = ForestFoliagePalette.DefaultStrength;
     // =========================================================
     // The FPS label remains a separate HUD sibling, visible with this panel closed.
-    public void Initialize(EnvironmentController environment, PlayerController player)
+    public void Initialize(EnvironmentController environment, PlayerController player, PineForest forest)
     {
-        _environment = environment; _player = player;
-        // Update the four shared resources once on startup (also sets the preview defaults).
+        _environment = environment; _player = player; _forest = forest;
+        // Update the shared resources once on startup (also sets the preview defaults).
         ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
         MouseFilter = MouseFilterEnum.Ignore;
         _panel = new PanelContainer { Position = new Vector2(16, 80), Size = new Vector2(410, 510), Visible = false };
@@ -75,13 +76,27 @@ public partial class EnvironmentDebugOverlay : Control
             ForestFoliagePalette.Apply(_forestTint, _forestTintStrength);
         };
         foliage.AddChild(originalColours);
+        var treeModels = AddSection(content, "Pine tree model comparison");
+        treeModels.AddChild(new Label { Text = "Switch all trees in place; terrain, collisions and LOD distances stay fixed." });
+        var modelChoice = new OptionButton { CustomMinimumSize = new Vector2(370, 30) };
+        modelChoice.AddItem("PineTree002 — original realistic", (int)PineForest.PineVisualStyle.PineTree002);
+        modelChoice.AddItem("PineTree001 — stylized faceted", (int)PineForest.PineVisualStyle.PineTree001);
+        modelChoice.Select((int)forest.ActiveVisualStyle);
+        modelChoice.ItemSelected += index =>
+        {
+            var requested = (PineForest.PineVisualStyle)modelChoice.GetItemId((int)index);
+            if (!forest.TrySetVisualStyle(requested))
+                modelChoice.Select((int)forest.ActiveVisualStyle);
+        };
+        treeModels.AddChild(modelChoice);
         var copy = new Button { Text = "Copy Settings" };
         copy.Pressed += () => DisplayServer.ClipboardSet(JsonSerializer.Serialize(new {
             settings.FogEnabled, settings.ClearDistance, settings.FullDistance, settings.AtmosphericDensity,
             FogColor = new[] { settings.FogColor.R, settings.FogColor.G, settings.FogColor.B, 1f },
             settings.Hour, settings.MinutesPerDay, settings.SunEnergy, settings.ShadowDistance,
             ForestTint = new[] { _forestTint.R, _forestTint.G, _forestTint.B, _forestTint.A },
-            ForestTintStrength = _forestTintStrength
+            ForestTintStrength = _forestTintStrength,
+            PineTreeModel = _forest.ActiveVisualStyle.ToString()
         }, new JsonSerializerOptions { WriteIndented = true }));
         content.AddChild(copy);
     }

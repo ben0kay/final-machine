@@ -16,7 +16,8 @@ public partial class TestWorld : Node3D
         AddChild(timer);
         var environment = GetNode<EnvironmentController>("Environment/EnvironmentController");
         environment.Initialize(GetNode<WorldEnvironment>("Environment"), _player.GetNode<Camera3D>("Camera3D"));
-        GetNode<EnvironmentDebugOverlay>("DebugUIRoot/EnvironmentDebugOverlay").Initialize(environment, _player);
+        GetNode<EnvironmentDebugOverlay>("DebugUIRoot/EnvironmentDebugOverlay").Initialize(
+            environment, _player, GetNode<PineForest>("Forest"));
     }
     // =========================================================
     // Sample engine render counters twice a second; no per-frame debug processing.

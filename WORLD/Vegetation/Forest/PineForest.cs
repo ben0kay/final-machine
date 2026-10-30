@@ -6,7 +6,14 @@ public partial class PineForest : Node3D
 {
     [Export] public ForestSettings Settings { get; set; }
     [Export] public NodePath SurfacePath { get; set; }
+    public enum PineVisualStyle { PineTree002 = 0, PineTree001 = 1 }
+    public PineVisualStyle ActiveVisualStyle { get; private set; } = PineVisualStyle.PineTree002;
+
     private readonly Dictionary<Vector2I, Vector3> _occupied = new();
+    private readonly List<(MultiMesh Multimesh, int Lod)> _visualBatches = new();
+    // Three prepared meshes per family; initial 002 is loaded at build, 001 on first comparison.
+    private readonly Mesh[][] _styleMeshes = new Mesh[2][];
+
     public override void _Ready() => CallDeferred(nameof(Build));
     // =========================================================
     // Saved terrain queries stay behind the integration bridge, including slope and woodland mask.
@@ -44,16 +51,20 @@ public partial class PineForest : Node3D
             if (!batches.TryGetValue(batch, out var transforms)) batches[batch] = transforms = new();
             transforms.Add(new Transform3D(basis, position - new Vector3(batch.X * Settings.BatchSize, 0, batch.Y * Settings.BatchSize)));
         }
-        // One shared ShaderMaterial per atlas; imported bark remains on surface 0.
+        // Keep the original PineTree002 build path and transforms intact for the default forest.
         var needlesNear = GD.Load<ShaderMaterial>(
             "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesNear.tres");
         var needlesLod3 = GD.Load<ShaderMaterial>(
             "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesLod3.tres");
+        _styleMeshes[(int)PineVisualStyle.PineTree002] = new Mesh[3];
         for (int lod = 0; lod < 3; lod++)
         {
             string path = $"res://ASSETS/Vegetation/Trees/PineTree002/Models/pine_tree_002_a_LOD{lod + 1}.gltf";
-            var source = GD.Load<PackedScene>(path).Instantiate<Node3D>();
+            var packed = GD.Load<PackedScene>(path);
+            if (packed == null) { GD.PushError("PineForest: Missing original model " + path); return; }
+            var source = packed.Instantiate<Node3D>();
             PrepareNeedleMaterial(source, lod == 2 ? needlesLod3 : needlesNear);
+            _styleMeshes[(int)PineVisualStyle.PineTree002][lod] = FindFirstMesh(source)?.Mesh;
             foreach (var batch in batches) AddMeshes(source, Transform3D.Identity, batch.Key, batch.Value, lod);
             source.Free();
         }
@@ -63,13 +74,88 @@ public partial class PineForest : Node3D
         var trunk = new CapsuleShape3D { Radius = 0.32f, Height = 16f };
         foreach (var position in keptPositions)
             body.AddChild(new CollisionShape3D { Shape = trunk, Position = position + Vector3.Up * 8 });
+        // A queued F1 selection made before the deferred build should still take effect.
+        if (ActiveVisualStyle != PineVisualStyle.PineTree002)
+            ApplyPreparedMeshes(_styleMeshes[(int)ActiveVisualStyle]);
         GD.Print($"FM0: {keptPositions.Count} pines in {batches.Count} spatial batches; no per-tree processing.");
         _occupied.Clear();
     }
+
+    #region Model comparison
+    // =========================================================
+    // Swap only each existing MultiMesh's shared mesh. Instance transforms, collision proxies,
+    // spatial batches, visibility distances, and shadow settings are never reconstructed.
+    public bool TrySetVisualStyle(PineVisualStyle style)
+    {
+        if (style != PineVisualStyle.PineTree002 && style != PineVisualStyle.PineTree001) return false;
+        if (style == ActiveVisualStyle) return true;
+        var meshes = GetPreparedMeshes(style);
+        if (meshes == null) return false;
+        ActiveVisualStyle = style;
+        if (_visualBatches.Count > 0) ApplyPreparedMeshes(meshes);
+        GD.Print("PineForest: visual family switched to " + style);
+        return true;
+    }
+
+    // =========================================================
+    // Lazy-load the stylized family once on first selection; no tree node instances survive.
+    private Mesh[] GetPreparedMeshes(PineVisualStyle style)
+    {
+        int key = (int)style;
+        if (_styleMeshes[key] != null) return _styleMeshes[key];
+
+        if (style != PineVisualStyle.PineTree001) return null;
+        var foliage = GD.Load<ShaderMaterial>(
+            "res://ASSETS/Vegetation/Trees/PineTree001/Materials/PineTree001Foliage.tres");
+        var bark = GD.Load<ShaderMaterial>(
+            "res://ASSETS/Vegetation/Trees/PineTree001/Materials/PineTree001Bark.tres");
+        if (foliage == null || bark == null)
+        {
+            GD.PushError("PineForest: PineTree001 materials unavailable."); return null;
+        }
+        var prepared = new Mesh[3];
+        for (int lod = 0; lod < 3; lod++)
+        {
+            // Stylized PineTree001 uses zero-based source LOD0 / LOD1 / LOD2.
+            string path = $"res://ASSETS/Vegetation/Trees/PineTree001/Models/pine_tree_001_a_LOD{lod}.gltf";
+            var packed = GD.Load<PackedScene>(path);
+            if (packed == null) { GD.PushError("PineForest: Missing stylized model " + path); return null; }
+            var source = packed.Instantiate<Node3D>();
+            PrepareNeedleMaterial(source, foliage, bark);
+            prepared[lod] = FindFirstMesh(source)?.Mesh;
+            source.Free();
+            if (prepared[lod] == null)
+            {
+                GD.PushError("PineForest: Stylized model has no mesh " + path); return null;
+            }
+        }
+        _styleMeshes[key] = prepared;
+        return prepared;
+    }
+
+    // =========================================================
+    private void ApplyPreparedMeshes(Mesh[] meshes)
+    {
+        if (meshes == null || meshes.Length != 3) return;
+        foreach (var (multi, lod) in _visualBatches)
+            multi.Mesh = meshes[lod];
+    }
+
+    // =========================================================
+    private static MeshInstance3D FindFirstMesh(Node3D node)
+    {
+        if (node is MeshInstance3D mesh && mesh.Mesh != null) return mesh;
+        foreach (var child in node.GetChildren())
+            if (child is Node3D child3D && FindFirstMesh(child3D) is MeshInstance3D found) return found;
+        return null;
+    }
+    #endregion
+
+    #region Materials and batches
     // =========================================================
     // Duplicate each source mesh once per LOD, not once per tree or batch.
-    // Only the needle surface changes; never alter the imported bark or source glTF resource.
-    private void PrepareNeedleMaterial(Node3D node, ShaderMaterial needles)
+    // PineTree002 retains its PBR bark. PineTree001 binds both vertex-colour shader surfaces.
+    private void PrepareNeedleMaterial(Node3D node, ShaderMaterial needles, ShaderMaterial bark = null)
     {
         if (node is MeshInstance3D visual)
         {
@@ -77,13 +163,14 @@ public partial class PineForest : Node3D
             else if (visual.Mesh is ArrayMesh imported && imported.GetSurfaceCount() >= 2)
             {
                 var prepared = (ArrayMesh)imported.Duplicate(false);
+                if (bark != null) prepared.SurfaceSetMaterial(0, bark);
                 prepared.SurfaceSetMaterial(1, needles);
                 visual.Mesh = prepared;
             }
             else GD.PushWarning("PineForest: expected two-surface ArrayMesh; keeping the imported material.");
         }
         foreach (var child in node.GetChildren())
-            if (child is Node3D child3D) PrepareNeedleMaterial(child3D, needles);
+            if (child is Node3D child3D) PrepareNeedleMaterial(child3D, needles, bark);
     }
 
     // =========================================================
@@ -107,7 +194,9 @@ public partial class PineForest : Node3D
                 CastShadow = lod == 2 ? GeometryInstance3D.ShadowCastingSetting.Off : GeometryInstance3D.ShadowCastingSetting.On
             };
             AddChild(instance);
+            _visualBatches.Add((multi, lod));
         }
         foreach (var child in node.GetChildren()) if (child is Node3D child3D) AddMeshes(child3D, local, cell, transforms, lod);
     }
+    #endregion
 }

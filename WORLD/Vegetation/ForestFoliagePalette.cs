@@ -9,6 +9,7 @@ public static class ForestFoliagePalette
     private static readonly string[] MaterialPaths = {
         "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesNear.tres",
         "res://ASSETS/Vegetation/Trees/PineTree002/Materials/PineNeedlesLod3.tres",
+        "res://ASSETS/Vegetation/Trees/PineTree001/Materials/PineTree001Foliage.tres",
         "res://WORLD/Vegetation/Grass/Materials/ForestFloorGrass.tres",
         "res://WORLD/Vegetation/Grass/Materials/ForestGrass002Filler.tres"
     };

@@ -53,3 +53,8 @@ Then use this `ShaderMaterial` on **surface 1** of the imported PineTree001 mode
 ## Source filenames — Terrain3D zero-based convention
 
 The imported GLTF/BIN pair names now use **LOD0/LOD1/LOD2**, consistent with Terrain3D's indexes: **LOD0 = near 5,234 triangles**, **LOD1 = mid 1,354**, **LOD2 = far 146**. This is a filename/node/mesh-label and buffer-URI migration only; all binary geometry bytes are unchanged. `Source/generate_models.py` now emits the same names on regeneration. The comparison preview still displays human-friendly LOD1/LOD2/LOD3 labels while mapping them to source LOD0/LOD1/LOD2. No tree placement, thresholds or active forest is changed.
+
+
+## F1 live model comparison in the active forest
+
+The main test world's F1 debug overlay now switches the original PineTree002 forest to PineTree001 and back at runtime. This retains all original tree transforms, forest occupancy/trunk collision, visibility tier distances and other foliage. `PineForest` lazily prepares PineTree001's three mesh tiers and binds the existing `PineTree001Bark.tres` and `PineTree001Foliage.tres` materials before swapping them onto the existing GPU MultiMeshes. The shared forest tint controls update PineTree001 foliage too. Its preview scene and Terrain3D Test2 wrapper remain untouched. Switching is for appearance comparisons, not a persistent art selection; Godot lighting, alpha, LOD and FPS review remains pending.
