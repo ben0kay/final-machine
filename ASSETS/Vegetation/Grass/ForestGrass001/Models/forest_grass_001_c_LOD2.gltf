@@ -1,7 +1,7 @@
 {
   "asset": {
     "version": "2.0",
-    "generator": "Terra Machine ForestGrass001 winding correction; source geometry and normals preserved"
+    "generator": "Final Machine low-poly geometric blade grass author"
   },
   "scene": 0,
   "scenes": [
@@ -37,10 +37,9 @@
   ],
   "materials": [
     {
-      "name": "ForestGrass001_DarkCutout",
+      "name": "ForestGrass001_FineBlades",
       "doubleSided": true,
-      "alphaMode": "MASK",
-      "alphaCutoff": 0.39,
+      "alphaMode": "OPAQUE",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
           1,
@@ -52,14 +51,14 @@
           "index": 0
         },
         "metallicFactor": 0,
-        "roughnessFactor": 0.9
+        "roughnessFactor": 0.93
       }
     }
   ],
   "textures": [
     {
-      "sampler": 0,
-      "source": 0
+      "source": 0,
+      "sampler": 0
     }
   ],
   "samplers": [
@@ -78,38 +77,38 @@
   "buffers": [
     {
       "uri": "forest_grass_001_c_LOD2.bin",
-      "byteLength": 1680
+      "byteLength": 3348
     }
   ],
   "bufferViews": [
     {
       "buffer": 0,
       "byteOffset": 0,
-      "byteLength": 384,
+      "byteLength": 792,
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteOffset": 384,
-      "byteLength": 384,
+      "byteOffset": 792,
+      "byteLength": 792,
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteOffset": 768,
-      "byteLength": 256,
+      "byteOffset": 1584,
+      "byteLength": 528,
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteOffset": 1024,
-      "byteLength": 512,
+      "byteOffset": 2112,
+      "byteLength": 1056,
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteOffset": 1536,
-      "byteLength": 144,
+      "byteOffset": 3168,
+      "byteLength": 180,
       "target": 34963
     }
   ],
@@ -117,48 +116,48 @@
     {
       "bufferView": 0,
       "componentType": 5126,
-      "count": 32,
+      "count": 66,
       "type": "VEC3",
       "min": [
-        -0.4346720576286316,
+        -0.39742112159729004,
         0.0,
-        -0.44809073209762573
+        -0.36039456725120544
       ],
       "max": [
-        0.5480594635009766,
-        0.7078564167022705,
-        0.2801118493080139
+        0.31732481718063354,
+        0.9524274468421936,
+        0.4519936442375183
       ]
     },
     {
       "bufferView": 1,
       "componentType": 5126,
-      "count": 32,
+      "count": 66,
       "type": "VEC3"
     },
     {
       "bufferView": 2,
       "componentType": 5126,
-      "count": 32,
+      "count": 66,
       "type": "VEC2"
     },
     {
       "bufferView": 3,
       "componentType": 5126,
-      "count": 32,
+      "count": 66,
       "type": "VEC4"
     },
     {
       "bufferView": 4,
       "componentType": 5123,
-      "count": 72,
+      "count": 90,
       "type": "SCALAR"
     }
   ],
   "extras": {
     "variant": "C",
     "lod": 2,
-    "reference": "grass_medium_01_1k.blend.zip",
-    "card_count": 4
+    "purpose": "low-poly fine geometric grass ribbons",
+    "triangle_count": 30
   }
 }
