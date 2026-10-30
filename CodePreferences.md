@@ -26,6 +26,16 @@ This file adapts the user's established coding preferences from Terra Machine/Wa
 - Prefer simple implementations with clearly owned responsibilities and replaceable art/graphics. Do not overengineer for imaginary future features.
 - Keep gameplay/domain logic separate from addon/native integrations and from imported visual assets.
 
+### Godot scene tree organization (mandatory preference)
+
+- Keep **root scene trees clean and easy to navigate**. A main world scene should show only major responsibilities at its top level (for example `Terrain`, `Environment`, `Vegetation`, `Entities`, `Structures`, `Player`, `Debug`), not dozens or hundreds of individual objects.
+- Group related nodes under clearly named **plain organizational `Node`/`Node3D` parents** or reusable subscenes. For example, put forest instances and their helpers under `Vegetation/Forest` instead of scattering trees across the world root.
+- Prefer **instanced reusable scenes** for self-contained systems (player, terrain, environment, forest manager, buildings). Keep the owning system's internal nodes inside that scene rather than exposing its internals at the world root.
+- Use descriptive, consistent names and sensible hierarchy depth: avoid both a flat cluttered root **and** unnecessary nesting/wrapper nodes. Do not add managers or processing scripts to organizational nodes that only need to group children.
+- **Never make thousands of individual tree/grass/prop scene nodes merely for editor organization.** Prefer appropriate MultiMesh/native Terrain3D instancing or streamed batches, grouped under a small number of meaningful scene owners.
+- When adding a feature, place it under the correct existing root group; create a new top-level category only if it represents a genuinely separate responsibility. Preserve stable scene paths/signals and update references when a hierarchy must change.
+- Keep the Godot scene tree intuitive enough that the owner can quickly expand a top-level group, find a system, and toggle visibility/debug it without hunting through unrelated nodes.
+
 ### Reference repository conventions
 
 - **[Terra Machine](https://github.com/ben0kay/terra-machine):** look at foliage authoring, pine-tree LOD/shadow budgets, instancing, shaders, performance comparisons, C# scene/config organization and landscape experiments. Reuse **knowledge** selectively; don't import Voxel Tools classes or old excavation API into Terrain3D.
