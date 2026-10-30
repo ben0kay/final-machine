@@ -70,6 +70,17 @@
 - **Fix / prevention:** Prefer ordinary ShaderMaterial uniforms when a finite set of shared foliage materials needs one UI palette. `ForestFoliagePalette.cs` now updates two pine needle and two forest grass material resources when F1 changes. Removes the project-global compile-time dependency and doesn't touch GLTF geometry, LOD, wind or per-instance batch processing.
 - **Verification:** Reviewed all three shader declarations, four material paths and the single event-driven UI helper. Pull, reopen the Godot project, check for shader compilation errors and confirm F1 changes both pine needles and grass while bark stays unchanged. Runtime result remains owner-pending.
 
+### SCENE-001 — Editor test scene must not reuse Sky3D without compatible initialization
+
+**Area:** Terrain3D test scenes / editor-preview environment / Sky3D
+**Affected:** `WORLD/Scenes/test2.tscn`
+**Status:** Owner-confirmed Godot runtime error; correction source-reviewed, runtime retest pending
+
+- **Symptom:** Playing Test 2 stopped inside `addons/sky_3d/src/Sky3D.gd` around line 545 with an invalid `sky.environment` assignment because `sky` was nil.
+- **Cause / uncertainty:** Test 2 reused the Sky3D-based `environment.tscn` without the original test world's initialization/ownership. Sky3D's `_set("environment", ...)` assumes its child sky dome already exists. The precise initialization ordering that triggered this in the owner's editor is not yet independently reproduced.
+- **Fix / prevention:** Test 2 uses its own plain `WorldEnvironment`, `ProceduralSkyMaterial` and `DirectionalLight3D` for preview instead of the runtime Sky3D scene, with a separate one-shot player spawn script. Keep authoring sandboxes independent of heavy environment controllers unless their complete setup contract is included.
+- **Verification:** Source-reviewed absence of Sky3D from Test 2; owner should reopen Godot, F6 play Test 2, verify the player spawns on terrain and original Test 1 remains unchanged.
+
 ## New entry template
 
 ### <AREA-###> — Short failure title
