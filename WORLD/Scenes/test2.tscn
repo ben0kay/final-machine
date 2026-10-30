@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://1kgns8wxalbd" path="res://WORLD/Terrain/Integration/Terrain3D/surface.gd" id="1"]
 [ext_resource type="Terrain3DAssets" uid="uid://ciqoggwm2fkms" path="res://WORLD/Scenes/Test2/TerrainAssets_Test2.tres" id="2"]
 [ext_resource type="PackedScene" path="res://PLAYER/player.tscn" id="3"]
-[ext_resource type="Script" path="res://WORLD/Scenes/Test2/Test2World.cs" id="13"]
 [ext_resource type="Shader" uid="uid://cvd0x7lon1ur6" path="res://addons/sky_3d/shaders/SkyMaterial.gdshader" id="4_wqaw0"]
 [ext_resource type="Texture2D" uid="uid://cfqk60lpl5ljv" path="res://addons/sky_3d/assets/resources/SNoise.tres" id="5_u5wtg"]
 [ext_resource type="Texture2D" uid="uid://cecwdqjol0ckd" path="res://addons/sky_3d/assets/textures/noiseClouds.png" id="6_suk3w"]
@@ -11,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://djpfuyxkryegn" path="res://addons/sky_3d/assets/textures/noise.jpg" id="8_ye5jh"]
 [ext_resource type="Texture2D" uid="uid://bm7dot7t7u1q4" path="res://addons/sky_3d/assets/thirdparty/textures/milkyway/StarField.jpg" id="9_bfwgm"]
 [ext_resource type="Texture2D" uid="uid://c1vwcdcdvb74a" path="res://addons/sky_3d/assets/thirdparty/textures/milkyway/Milkyway.jpg" id="10_b1juq"]
+[ext_resource type="Script" uid="uid://bxf7spppj4eux" path="res://WORLD/Scenes/Test2/Test2World.cs" id="13"]
 
 [sub_resource type="Gradient" id="Gradient_5v0ed"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -91,7 +91,7 @@ shader_parameter/starmap_flip_v = false
 shader_parameter/starmap_alignment = Vector3(2.68288, -0.25891, 0.40101)
 shader_parameter/star_rotation_offset = 9.38899
 shader_parameter/star_rotation = -10.907371971167612
-shader_parameter/star_tilt = -1.2915436464758039
+shader_parameter/star_tilt = -1.291543646475804
 shader_parameter/star_field_color = Color(1, 1, 1, 1)
 shader_parameter/star_field_texture = ExtResource("9_bfwgm")
 shader_parameter/star_scintillation = 0.75
@@ -158,29 +158,29 @@ top_level = true
 script = ExtResource("1")
 metadata/_edit_lock_ = true
 
-[node name="Environment" type="WorldEnvironment" parent="."]
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=2145266834]
 environment = SubResource("Environment_blefg")
 camera_attributes = SubResource("CameraAttributesPractical_08xeq")
 
-[node name="SunLight" type="DirectionalLight3D" parent="."]
-rotation_degrees = Vector3(-48, -28, 0)
+[node name="SunLight" type="DirectionalLight3D" parent="." unique_id=1972532511]
+transform = Transform3D(0.88294756, 0.3488854, -0.3141378, 0, 0.66913056, 0.74314487, 0.46947157, -0.656158, 0.5908072, 0, 0, 0)
 light_energy = 1.2
 shadow_enabled = true
 
-[node name="WorldActorsRoot" type="Node3D" parent="."]
+[node name="WorldActorsRoot" type="Node3D" parent="." unique_id=411948511]
 
-[node name="PersistentEntitiesRoot" type="Node3D" parent="WorldActorsRoot"]
+[node name="PersistentEntitiesRoot" type="Node3D" parent="WorldActorsRoot" unique_id=1525859458]
 
-[node name="Player" parent="WorldActorsRoot/PersistentEntitiesRoot" instance=ExtResource("3")]
-position = Vector3(0, 200, 20)
+[node name="Player" parent="WorldActorsRoot/PersistentEntitiesRoot" unique_id=432327016 instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 200, 20)
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=884589784]
 
-[node name="Instructions" type="Label" parent="HUD"]
+[node name="Instructions" type="Label" parent="HUD" unique_id=1089542725]
 offset_left = 16.0
 offset_top = 12.0
-text = "TEST 2: Terrain sculpting sandbox | Arrows move | Shift sprint | RMB jump | Esc cursor"
-theme_override_font_sizes/font_size = 14
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 14
+text = "TEST 2: Terrain sculpting sandbox | Arrows move | Shift sprint | RMB jump | Esc cursor"
